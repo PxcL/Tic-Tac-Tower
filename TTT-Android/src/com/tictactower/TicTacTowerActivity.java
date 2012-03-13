@@ -10,6 +10,6 @@ public class TicTacTowerActivity extends AndroidApplication {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initialize(new TicTacTowerDesktop(), false);
+        initialize(new Game(), false);
     }
 }
