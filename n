@@ -1,0 +1,13 @@
+[1mdiff --git a/TTT-Desktop/src/com/tictactower/TicTacTowerDesktop.java b/TTT-Desktop/src/com/tictactower/TicTacTowerDesktop.java[m
+[1mindex fe0a71f..df7b505 100644[m
+[1m--- a/TTT-Desktop/src/com/tictactower/TicTacTowerDesktop.java[m
+[1m+++ b/TTT-Desktop/src/com/tictactower/TicTacTowerDesktop.java[m
+[36m@@ -27,7 +27,7 @@[m [mpublic class TicTacTowerDesktop implements ApplicationListener {[m
+ [m
+ 	@Override[m
+ 	public void render() {[m
+[31m-		Gdx.gl.glClearColor(1, 1, 1, 1);[m
+[32m+[m		[32mGdx.gl.glClearColor(0, 1, 0, 1);[m
+ 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);[m
+ 		[m
+ 	}[m
