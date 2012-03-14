@@ -5,6 +5,6 @@ import com.badlogic.gdx.backends.jogl.JoglApplication;
 public class DesktopStarter {
 	
 	public static void main(String[] args) {
-		new JoglApplication(new Game(), "Tic-Tac-Tower", 480, 320, false);
+		new JoglApplication(Game.getInstance(), "Tic-Tac-Tower", 320, 480, false);
 	}
 }
