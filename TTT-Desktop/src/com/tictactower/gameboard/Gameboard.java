@@ -17,6 +17,7 @@ public class Gameboard {
 		// Oppretter et gameboard med 9 x 9 ruter.
 		gameboard = new Square[9][9];
 		
+		
 		// Initialiserer gameboardet med tom brikke i hver rute.
 		resetGameboard();
 	}
