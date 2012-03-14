@@ -1,2 +1,2 @@
-# Ignore bin folders with the classes
+# Ignore bin folders with the .class files
 /bin
