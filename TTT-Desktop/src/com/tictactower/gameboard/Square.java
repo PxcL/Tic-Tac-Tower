@@ -7,11 +7,10 @@ public class Square {
 
 	private Vector2 position;
 	private Mark mark;
-	public final static int WIDTH = Gdx.graphics.getWidth() / 14;
-	public final static int HEIGHT = 20;
+	public final static int EDGE_LENGTH = Gdx.graphics.getWidth() / 10;
 	
 	public Square(int x, int y) {
-		position = new Vector2(Gameboard.X_OFFSET + WIDTH * x, Gameboard.Y_OFFSET + HEIGHT * y);
+		position = new Vector2(Gameboard.X_OFFSET + EDGE_LENGTH * x, Gameboard.Y_OFFSET + EDGE_LENGTH * y);
 		mark = Mark.EMPTY;
 	}
 	

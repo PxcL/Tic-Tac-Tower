@@ -6,10 +6,9 @@ import com.tictactower.player.Player1;
 
 public class Gameboard {
 	
-	public final static int TOTAL_WIDTH = Square.WIDTH * 9;
-	public final static int TOTAL_HEIGHT = Square.HEIGHT * 9;
-	public final static int X_OFFSET = (Gdx.graphics.getWidth() - TOTAL_WIDTH) / 2;
-	public final static int Y_OFFSET = 250;
+	public final static int GAMEBOARD_EDGE_LENGTH = Square.EDGE_LENGTH * 9;
+	public final static int X_OFFSET = (Gdx.graphics.getWidth() - GAMEBOARD_EDGE_LENGTH) / 2;
+	public final static int Y_OFFSET = (Gdx.graphics.getHeight() - (X_OFFSET + GAMEBOARD_EDGE_LENGTH));
 	
 	Square[][] gameboard;
 	

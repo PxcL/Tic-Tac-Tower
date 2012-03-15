@@ -1,13 +1,18 @@
 package com.tictactower.graphics;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tictactower.Game;
+import com.tictactower.gameboard.Mark;
 import com.tictactower.gameboard.Square;
+import com.tictactower.ui.Button;
+import com.tictactower.ui.ButtonEndTurn;
 
 public class Graphics {
-
+	
 	public void draw(SpriteBatch spriteBatch) {
 		drawGameboard(spriteBatch);
+		drawButtons(spriteBatch);
 	}
 
 	private void drawGameboard(SpriteBatch spriteBatch) {
@@ -15,14 +20,36 @@ public class Graphics {
 		
 		for (int i = 0; i < gameboard.length; i++) {
 			for (int j = 0; j < gameboard[i].length; j++) {
-				spriteBatch.draw(Textures.EMPTY_SQUARE, 
+				Texture markTexture = null;
+				if (gameboard[i][j].getMark() == Mark.EMPTY)
+					markTexture = Textures.MARK_EMPTY;
+				else if (gameboard[i][j].getMark() == Mark.P1_ACTIVE)
+					markTexture = Textures.MARK_P1_ACTIVE;
+				else if (gameboard[i][j].getMark() == Mark.P2_ACTIVE)
+					markTexture = Textures.MARK_P2_ACTIVE;
+					
+				spriteBatch.draw(markTexture, 
 								gameboard[i][j].getPosition().x, 
 								gameboard[i][j].getPosition().y, 
-								Square.WIDTH, 
-								Square.HEIGHT);
+								Square.EDGE_LENGTH, 
+								Square.EDGE_LENGTH);
 			}
 		}
-		
+	}
+	
+	private void drawButtons(SpriteBatch spriteBatch) {
+		for (Button button : Game.getInstance().getButtons().getButtonList()) {
+			spriteBatch.draw(findTexture(button),
+							button.getPosition().x, 
+							button.getPosition().y, 
+							button.getWidth(),
+							button.getHeight());
+		}
+	}
+	
+	private Texture findTexture(Button button) {
+		if (button instanceof ButtonEndTurn) return Textures.BUTTON_END_TURN;
+		else return null;
 	}
 	
 }

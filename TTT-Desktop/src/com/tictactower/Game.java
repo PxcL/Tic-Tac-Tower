@@ -10,6 +10,7 @@ import com.tictactower.input.Input;
 import com.tictactower.player.Player;
 import com.tictactower.player.Player1;
 import com.tictactower.player.Player2;
+import com.tictactower.ui.Buttons;
 
 public class Game implements ApplicationListener {
 	
@@ -24,23 +25,29 @@ public class Game implements ApplicationListener {
 	}
 	
 	private Gameboard gameboard;
-	private Player player1;
-	private Player player2;
+	private Player1 player1;
+	private Player2 player2;
 	private Graphics graphics;
-	private Input input;
+	private Buttons buttons;
+	
+	private Player activePlayer;
 	
 	SpriteBatch spriteBatch;
 
 	@Override
 	public void create() {
-		// Create the gameboard
 		Gdx.gl.glClearColor(0, 1, 0, 1);
+		
+		// Input trenger ingen peker siden kommunikasjonen bare går ut fra Input.
+		new Input();
 		
 		gameboard = new Gameboard();
 		player1 = new Player1();
 		player2 = new Player2();
 		graphics = new Graphics();
-		input = new Input();
+		buttons = new Buttons();
+		
+		activePlayer = player1;
 		
 		spriteBatch = new SpriteBatch();
 	}
@@ -56,12 +63,9 @@ public class Game implements ApplicationListener {
 	@Override
 	public void render() {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
 		spriteBatch.begin();
 		graphics.draw(spriteBatch);
 		spriteBatch.end();
-		
-		
 	}
 
 	@Override
@@ -82,5 +86,20 @@ public class Game implements ApplicationListener {
 
 	public Player getPlayer2() {
 		return player2;
+	}
+	
+	public Buttons getButtons() {
+		return buttons;
+	}
+	
+	public Player getActivePlayer() {
+		return activePlayer;
+	}
+	
+	public void changeActivePlayer() {
+		if (activePlayer instanceof Player1)
+			activePlayer = player2;
+		else
+			activePlayer = player1;
 	}
 }

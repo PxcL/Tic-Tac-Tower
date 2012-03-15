@@ -1,3 +1,4 @@
 # Ignore bin folders with the .class files
+.DS_Store
 bin/
 *~
