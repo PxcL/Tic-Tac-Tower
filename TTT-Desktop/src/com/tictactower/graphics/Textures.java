@@ -13,6 +13,12 @@ public class Textures {
 	public final static Texture MARK_P2_ACTIVE = new Texture("P2_ACTIVE.png");
 	
 	public final static Texture BUTTON_END_TURN = new Texture("txtBox_75black.png");
-	public final static Texture BUTTON_SILENCE_ACTIVE = new Texture("skill_active.png");
-	public final static Texture BUTTON_SILENCE_DEACTIVE = new Texture("skill_deactive.png");
+	public final static Texture BUTTON_SILENCE_ACTIVE = new Texture("emp_active.png");
+	public final static Texture BUTTON_SILENCE_DEACTIVE = new Texture("emp_deactive.png");
+	public final static Texture BUTTON_DESTROY_TOWER_ACTIVE = new Texture("destow_active.png");
+	public final static Texture BUTTON_DESTROY_TOWER_DEACTIVE = new Texture("destow_deactive.png");
+	public final static Texture BUTTON_NEW_TOWER_ACTIVE = new Texture("newtow_active.png");
+	public final static Texture BUTTON_NEW_TOWER_DEACTIVE = new Texture("newtow_deactive.png");
+	public final static Texture BUTTON_MULTIPLE_TOWERS_ACTIVE = new Texture("multow_active.png");
+	public final static Texture BUTTON_MULTIPLE_TOWERS_DEACTIVE = new Texture("multow_deactive.png");
 }

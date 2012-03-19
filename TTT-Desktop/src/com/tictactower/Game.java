@@ -100,10 +100,12 @@ public class Game implements ApplicationListener {
 	public void changeActivePlayer() {
 		activePlayer.setNotUsedMark(false);
 		activePlayer.addEmpCount();
+		activePlayer.addDestroyTowerCount();
 		if (activePlayer instanceof Player1)
 			activePlayer = player2;
 		else
 			activePlayer = player1;
 		activePlayer.setNotUsedMark(true);
+		Gdx.app.log("EMP", Integer.toString(Game.getInstance().getActivePlayer().getEmpCount()));
 	}
 }

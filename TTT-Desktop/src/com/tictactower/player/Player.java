@@ -2,7 +2,6 @@ package com.tictactower.player;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.tictactower.Game;
 import com.tictactower.skills.Skill;
 import com.tictactower.ui.Buttons;
@@ -16,7 +15,7 @@ public abstract class Player {
 	protected int empCount = 0;
 	protected int newTowerCount = 0;
 	protected int destroyTowerCount = 0;
-	protected int lastSkillCount = 0;
+	protected int multipleTowersCount = 0;
 	
 	protected ArrayList<Skill> skills;
 	
@@ -51,31 +50,57 @@ public abstract class Player {
 	public void addEmpCount() {
 		empCount++;
 		Buttons.getButtonSilence().setActive(true);
-		Gdx.app.log("EMP", Integer.toString(empCount));
 	}
 
 	public int getNewTowerCount() {
 		return newTowerCount;
 	}
 
-	public void setNewTowerCount(int newTowerCount) {
-		this.newTowerCount = newTowerCount;
+	public void addNewTowerCount() {
+		newTowerCount++;
+		Buttons.getButtonNewTower().setActive(true);
+	}
+	
+	public void subNewTowerCount() {
+		newTowerCount--;
+		if (newTowerCount <= 0) {
+			newTowerCount = 0;
+			Buttons.getButtonNewTower().setActive(false);
+		}
 	}
 
 	public int getDestroyTowerCount() {
 		return destroyTowerCount;
 	}
 
-	public void setDestroyTowerCount(int destroyTowerCount) {
-		this.destroyTowerCount = destroyTowerCount;
+	public void addDestroyTowerCount() {
+		destroyTowerCount++;
+		Buttons.getButtonDestroyTower().setActive(true);
+	}
+	
+	public void subDestroyTowerCount() {
+		destroyTowerCount--;
+		if (destroyTowerCount <= 0) {
+			destroyTowerCount = 0;
+			Buttons.getButtonDestroyTower().setActive(false);
+		}
 	}
 
-	public int getLastSkillCount() {
-		return lastSkillCount;
+	public int getMultipleTowerCount() {
+		return multipleTowersCount;
 	}
 
-	public void setLastSkillCount(int lastSkillCount) {
-		this.lastSkillCount = lastSkillCount;
+	public void addMultipleTowerCount() {
+		multipleTowersCount++;
+		Buttons.getButtonMultipleTowers().setActive(true);
+	}
+	
+	public void subMultipleTowersCount() {
+		multipleTowersCount--;
+		if (multipleTowersCount <= 0) {
+			multipleTowersCount = 0;
+			Buttons.getButtonMultipleTowers().setActive(false);
+		}
 	}
 	
 	
