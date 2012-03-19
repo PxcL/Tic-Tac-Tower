@@ -7,6 +7,8 @@ import com.tictactower.gameboard.Mark;
 import com.tictactower.gameboard.Square;
 import com.tictactower.ui.Button;
 import com.tictactower.ui.ButtonEndTurn;
+import com.tictactower.ui.ButtonSilence;
+import com.tictactower.ui.Buttons;
 
 public class Graphics {
 	
@@ -38,7 +40,7 @@ public class Graphics {
 	}
 	
 	private void drawButtons(SpriteBatch spriteBatch) {
-		for (Button button : Game.getInstance().getButtons().getButtonList()) {
+		for (Button button : Buttons.getButtonList()) {
 			spriteBatch.draw(findTexture(button),
 							button.getPosition().x, 
 							button.getPosition().y, 
@@ -49,6 +51,10 @@ public class Graphics {
 	
 	private Texture findTexture(Button button) {
 		if (button instanceof ButtonEndTurn) return Textures.BUTTON_END_TURN;
+		else if (button instanceof ButtonSilence) {
+			if (Game.getInstance().getActivePlayer().getEmpCount() > 0) return Textures.BUTTON_SILENCE_ACTIVE;
+			else return Textures.BUTTON_SILENCE_DEACTIVE;
+		}
 		else return null;
 	}
 	

@@ -1,9 +1,9 @@
 package com.tictactower.skills;
 
-public class SkillMultipleSkills implements Skill {
+public class SkillMultipleSkills extends Skill {
 
 	@Override
-	public void use() {
+	public void execute() {
 		// TODO Auto-generated method stub
 		
 	}

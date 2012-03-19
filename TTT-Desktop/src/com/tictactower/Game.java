@@ -99,6 +99,7 @@ public class Game implements ApplicationListener {
 	
 	public void changeActivePlayer() {
 		activePlayer.setNotUsedMark(false);
+		activePlayer.addEmpCount();
 		if (activePlayer instanceof Player1)
 			activePlayer = player2;
 		else

@@ -4,17 +4,27 @@ import java.util.ArrayList;
 
 public class Buttons {
 
-	private ArrayList<Button> buttonList = new ArrayList<Button>();
+	private final static ArrayList<Button> buttonList = new ArrayList<Button>();
+	private final static ButtonEndTurn buttonEndTurn = new ButtonEndTurn(false);
+	private final static ButtonSilence buttonSilence = new ButtonSilence(false);
 	
 	public Buttons() {
 		createButtons();
 	}	
 	private void createButtons() {
-		ButtonEndTurn buttonEndTurn = new ButtonEndTurn(80, 30, 100, 100);
 		buttonList.add(buttonEndTurn);
+		buttonList.add(buttonSilence);
 	}
 	
-	public ArrayList<Button> getButtonList() {
+	public static ArrayList<Button> getButtonList() {
 		return buttonList;
+	}
+	
+	public static ButtonEndTurn getButtonEndTurn() {
+		return buttonEndTurn;
+	}
+	
+	public static ButtonSilence getButtonSilence() {
+		return buttonSilence;
 	}
 }

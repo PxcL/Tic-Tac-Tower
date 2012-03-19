@@ -1,8 +1,11 @@
 package com.tictactower.skills;
 
-public interface Skill {
+public abstract class Skill {
 
-	// General use-method that all skills use
-	public void use();
+	public final static void use(Skill skill) {
+		skill.execute();
+	}
+	
+	public abstract void execute();
 	
 }

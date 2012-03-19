@@ -7,6 +7,7 @@ import com.tictactower.gameboard.Gameboard;
 import com.tictactower.gameboard.Mark;
 import com.tictactower.gameboard.Square;
 import com.tictactower.ui.Button;
+import com.tictactower.ui.Buttons;
 
 public class Input implements InputProcessor {
 	
@@ -93,6 +94,7 @@ public class Input implements InputProcessor {
 		if (Game.getInstance().getGameboard().getMark(x, y) == Mark.EMPTY) {
 			Game.getInstance().getActivePlayer().setMark(x, y, Game.getInstance().getActivePlayer());
 			Game.getInstance().getActivePlayer().setNotUsedMark(false);
+			Buttons.getButtonEndTurn().setActive(true);
 		}
 	}
 	
@@ -101,10 +103,10 @@ public class Input implements InputProcessor {
 		 * Her itererer man gjennom liste med buttons. 
 		 * Hvis klikket/touchen traff en button sŒ kj¿rer mans den execute-metode.
 		 */
-		for (Button button : Game.getInstance().getButtons().getButtonList()) {
+		for (Button button : Buttons.getButtonList()) {
 			if (x > button.getPosition().x && x < button.getPosition().x + button.getWidth()
 					&& y > button.getPosition().y && y < button.getPosition().y + button.getHeight()) {
-				button.execute();
+				if (button.isActive()) button.execute();
 			}
 		}
 	}

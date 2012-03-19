@@ -1,11 +1,10 @@
 package com.tictactower.skills;
 
-public class SkillSilent implements Skill {
+public class SkillSilent extends Skill {
 
 	@Override
-	public void use() {
-		// Use EMP here
-		
+	public void execute() {
+		// Use EMP here	
 	}
 
 }
