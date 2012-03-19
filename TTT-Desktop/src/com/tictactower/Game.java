@@ -48,6 +48,7 @@ public class Game implements ApplicationListener {
 		buttons = new Buttons();
 		
 		activePlayer = player1;
+		activePlayer.setNotUsedMark(true);
 		
 		spriteBatch = new SpriteBatch();
 	}
@@ -97,9 +98,11 @@ public class Game implements ApplicationListener {
 	}
 	
 	public void changeActivePlayer() {
+		activePlayer.setNotUsedMark(false);
 		if (activePlayer instanceof Player1)
 			activePlayer = player2;
 		else
 			activePlayer = player1;
+		activePlayer.setNotUsedMark(true);
 	}
 }

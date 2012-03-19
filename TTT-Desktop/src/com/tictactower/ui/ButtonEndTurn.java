@@ -1,6 +1,6 @@
 package com.tictactower.ui;
 
-import com.badlogic.gdx.Gdx;
+import com.tictactower.Game;
 
 public class ButtonEndTurn extends Button {
 
@@ -10,6 +10,6 @@ public class ButtonEndTurn extends Button {
 
 	@Override
 	public void execute() {
-		Gdx.app.log("Button clicked", "End Turn");		
+		Game.getInstance().changeActivePlayer();	
 	}
 }

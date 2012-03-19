@@ -36,7 +36,7 @@ public class Input implements InputProcessor {
 		// Gjør om y slik at posisjon 0 er i bunn av skjermen, likt slik det er når man tegner teksturer/sprite.
 		y = Gdx.graphics.getHeight() - y;
 		
-		if (wasGameboardClicked(x, y)) {
+		if (wasGameboardClicked(x, y) && Game.getInstance().getActivePlayer().getNotUsedMark()) {
 			updateGameboard(x, y);
 		}
 		else {		
@@ -90,7 +90,7 @@ public class Input implements InputProcessor {
 		x /= Square.EDGE_LENGTH;
 		y /= Square.EDGE_LENGTH;
 		Game.getInstance().getActivePlayer().setMark(x, y, Game.getInstance().getActivePlayer());
-		Game.getInstance().changeActivePlayer();
+		Game.getInstance().getActivePlayer().setNotUsedMark(false);
 	}
 	
 	private void checkForButtonClicks(int x, int y) {
