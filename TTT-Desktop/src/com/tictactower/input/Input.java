@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.tictactower.Game;
 import com.tictactower.gameboard.Gameboard;
+import com.tictactower.gameboard.Mark;
 import com.tictactower.gameboard.Square;
 import com.tictactower.ui.Button;
 
@@ -89,8 +90,10 @@ public class Input implements InputProcessor {
 		// Så deler man på bredden/høyden til ruten for å få hvilken rad/kolonne trykket kom i.
 		x /= Square.EDGE_LENGTH;
 		y /= Square.EDGE_LENGTH;
-		Game.getInstance().getActivePlayer().setMark(x, y, Game.getInstance().getActivePlayer());
-		Game.getInstance().getActivePlayer().setNotUsedMark(false);
+		if (Game.getInstance().getGameboard().getMark(x, y) == Mark.EMPTY) {
+			Game.getInstance().getActivePlayer().setMark(x, y, Game.getInstance().getActivePlayer());
+			Game.getInstance().getActivePlayer().setNotUsedMark(false);
+		}
 	}
 	
 	private void checkForButtonClicks(int x, int y) {
