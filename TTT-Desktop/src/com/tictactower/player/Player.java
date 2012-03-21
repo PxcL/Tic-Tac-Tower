@@ -24,7 +24,7 @@ public abstract class Player {
 	}
 
 	public void setMark(int x, int y, Player player) {
-		Game.getInstance().getGameboard().setMark(x, y, player);
+		Game.getInstance().getGameboard().setMarkToActive(x, y, player);
 	}
 	
 	public boolean getNotUsedMark() {
