@@ -1,48 +1,61 @@
 package com.tictactower.gamelogic;
 
-import com.tictactower.gameboard.Gameboard;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
+import com.tictactower.gameboard.Gameboard;
 
 public class FieldIndex{
-	public Vector2 position;
-	public boolean valid;
+	private int x;
+	private int y;
 		
-	public boolean Valid(float x, float y){
+	public Vector2 GetPosition(){
+		return new Vector2(x,y);
+	}
+	
+	public int x(){
+		return x;
+	}
+	
+	public int y(){
+		return y;
+	}
+	public boolean Valid(){
 		return ( x>=0 && x<Gameboard.NUMBER_OF_ROWS ) && ( y>=0 && y<Gameboard.NUMBER_OF_COLUMNS );
 	}
 	
-	FieldIndex(float x, float y){
-		position = new Vector2(x,y);
+	FieldIndex(int _x, int _y){
+		x = _x;
+		y = _y;
 	}
 	FieldIndex(Vector2 v){
-		position = v;
-		// evt position = new Vector2(v);?
+		x = (int)v.x;
+		y = (int)v.y;
 	}
 	
 	public FieldIndex Up(){
-		return new FieldIndex(position.x, position.y+1);
+		return new FieldIndex(x, y+1);
 	}
 	public FieldIndex UpLeft(){
-		return new FieldIndex( position.x + 1, position.y+1);
+		return new FieldIndex( x + 1, y+1);
 	}
 	public FieldIndex Left(){
-		return new FieldIndex( position.x +1, position.y);
+		return new FieldIndex( x +1, y);
 	}
 	public FieldIndex DownLeft(){
-		return new FieldIndex( position.x +1, position.y -1);
+		return new FieldIndex( x +1, y -1);
 	}
 	public FieldIndex Down(){
-		return new FieldIndex( position.x, position.y -1);
+		return new FieldIndex( x, y -1);
 	}
 	public FieldIndex DownRight(){
-		return new FieldIndex( position.x-1, position.y-1);
+		return new FieldIndex( x-1, y-1);
 	}
 	public FieldIndex Right(){
-		return new FieldIndex( position.x -1, position.y);
+		return new FieldIndex( x -1, y);
 	}
 	public FieldIndex UpRight(){
-		return new FieldIndex( position.x -1, position.y+1);
+		return new FieldIndex( x -1, y+1);
 	}
 
 	public FieldIndex Up(int direction){
@@ -97,6 +110,27 @@ public class FieldIndex{
 			case 7: return this.DownRight();
 			default: return new FieldIndex(-1,-1);
 		}
+	}
+	
+	public ArrayList<FieldIndex> GetNeigbours(){
+		ArrayList<FieldIndex> set = new ArrayList<FieldIndex>();
+		if( Up().Valid())
+			set.add(Up());
+		if( Right().Valid())
+			set.add(Right());
+		if( Down().Valid())
+			set.add(Down());
+		if( Left().Valid())
+			set.add(Left());
+		if( UpRight().Valid())
+			set.add(UpRight());
+		if( UpLeft().Valid())
+			set.add(UpLeft());
+		if( DownRight().Valid())
+			set.add(DownRight());
+		if( DownLeft().Valid())
+			set.add(DownLeft());
+		return set;
 	}
 
 }
