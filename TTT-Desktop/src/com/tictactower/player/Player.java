@@ -17,6 +17,12 @@ public abstract class Player {
 	protected int destroyTowerCount = 0;
 	protected int multipleTowersCount = 0;
 	
+	protected int silenceUsage = 0;
+	protected int buildUsage = 0;
+	protected int shootUsage = 0;
+	
+	protected boolean isSilenced = false;
+	
 	protected ArrayList<Skill> skills;
 	
 	public Player() {
@@ -103,6 +109,42 @@ public abstract class Player {
 		}
 	}
 	
+	public void IncSilenceUsage(){
+		silenceUsage++;
+	}
 	
+	public int GetSilenceUsage(){
+		return silenceUsage;
+	}
+	
+	public void IncBuildUsage(){
+		buildUsage++;
+	}
+	
+	public int GetBuildUsage(){
+		return buildUsage; 
+	}
+	
+	public void IncShootUsage(){
+		shootUsage++;
+	}
+	
+	public int GetShootUsage(){
+		return shootUsage;
+	}
+	
+	public void ResetSkillUsage(){
+		silenceUsage = 0;
+		buildUsage = 0;
+		shootUsage = 0;
+	}
+	
+	public boolean IsSilenced(){
+		return isSilenced;
+	}
+	
+	public void SetSilenced(boolean b){
+		isSilenced = b;
+	}
 	
 }
