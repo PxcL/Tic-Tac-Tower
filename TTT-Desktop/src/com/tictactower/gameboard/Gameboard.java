@@ -23,13 +23,24 @@ public class Gameboard {
 		resetGameboard();
 	}
 	
-	public void setMark(int x, int y, Player player) {
+	public void setMarkToActive(int x, int y, Player player) {
 		if (player instanceof Player1) {
 			gameboard[x][y].setMark(Mark.P1_ACTIVE);
 		}
 		else {
 			gameboard[x][y].setMark(Mark.P2_ACTIVE);
 		}	
+	}
+	public void setMarkToBuilt(int x, int y, Player player) {
+		if (player instanceof Player1) {
+			gameboard[x][y].setMark(Mark.P1_BUILT);
+		}
+		else {
+			gameboard[x][y].setMark(Mark.P2_BUILT);
+		}	
+	}	
+	public void setMark(int x, int y, Mark m){
+		gameboard[x][y].setMark(m);
 	}
 	
 	public Mark getMark(int x, int y) {
