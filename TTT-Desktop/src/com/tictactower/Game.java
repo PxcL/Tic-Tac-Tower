@@ -10,6 +10,10 @@ import com.tictactower.input.Input;
 import com.tictactower.player.Player;
 import com.tictactower.player.Player1;
 import com.tictactower.player.Player2;
+import com.tictactower.skills.Skill;
+import com.tictactower.skills.SkillDestroyTower;
+import com.tictactower.skills.SkillNewTower;
+import com.tictactower.skills.SkillSilent;
 import com.tictactower.ui.Buttons;
 
 public class Game implements ApplicationListener {
@@ -51,6 +55,8 @@ public class Game implements ApplicationListener {
 		activePlayer.setNotUsedMark(true);
 		
 		spriteBatch = new SpriteBatch();
+		
+		
 	}
 
 	@Override
@@ -99,13 +105,63 @@ public class Game implements ApplicationListener {
 	
 	public void changeActivePlayer() {
 		activePlayer.setNotUsedMark(false);
-		activePlayer.addEmpCount();
-		activePlayer.addDestroyTowerCount();
+		activePlayer.addSilenceCount();
+		activePlayer.addShootCount();
+		activePlayer.ResetSkillUsage();
 		if (activePlayer instanceof Player1)
 			activePlayer = player2;
 		else
 			activePlayer = player1;
 		activePlayer.setNotUsedMark(true);
-		Gdx.app.log("EMP", Integer.toString(Game.getInstance().getActivePlayer().getEmpCount()));
+		Gdx.app.log("EMP", Integer.toString(Game.getInstance().getActivePlayer().getSilenceCount()));
 	}
+	
+	public boolean CanShoot(){
+		return (activePlayer.GetShootUsage()<activePlayer.getSkillCap() && !activePlayer.IsSilenced() && activePlayer.getShootCount()>0);
+	}
+	
+	public boolean CanBuild(){
+		return (activePlayer.GetBuildUsage()<activePlayer.getSkillCap() && !activePlayer.IsSilenced() && activePlayer.getBuildCount()>0);
+	}
+	
+	public boolean CanSilence(){
+		return (activePlayer.GetSilenceUsage()<activePlayer.getSkillCap() && !activePlayer.IsSilenced() && activePlayer.getSilenceCount()>0);
+	}
+	
+	public void IncSkillUse(Skill skill){
+		if(skill instanceof SkillDestroyTower){
+			activePlayer.IncShootUsage();
+		}
+		if(skill instanceof SkillNewTower){
+			activePlayer.IncBuildUsage();
+		}
+		if(skill instanceof SkillSilent){
+			activePlayer.IncSilenceUsage();
+		}
+	}
+	
+	public void useSkill(Skill skill){
+		if(skill instanceof SkillDestroyTower){
+			if(CanShoot()){
+				skill.execute();
+				IncSkillUse(skill);
+				activePlayer.subShootCount();
+			}
+		}
+		if(skill instanceof SkillNewTower){
+			if(CanBuild()){
+				skill.execute();
+				IncSkillUse(skill);
+				activePlayer.subBuildCount();
+			}
+		}
+		if(skill instanceof SkillSilent){
+			if(CanSilence()){
+				skill.execute();
+				IncSkillUse(skill);
+				activePlayer.subSilenceCount();
+			}
+		}
+	}
+	
 }

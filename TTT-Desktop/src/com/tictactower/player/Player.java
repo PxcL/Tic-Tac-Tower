@@ -12,10 +12,10 @@ public abstract class Player {
 	
 	protected int score;
 	
-	protected int empCount = 0;
-	protected int newTowerCount = 0;
-	protected int destroyTowerCount = 0;
-	protected int multipleTowersCount = 0;
+	protected int silenceCount = 0;
+	protected int buildCount = 0;
+	protected int shootCount = 0;
+	protected int skillCap = 0;
 	
 	protected int silenceUsage = 0;
 	protected int buildUsage = 0;
@@ -41,70 +41,70 @@ public abstract class Player {
 		this.notUsedMark = notUsedMark;
 	}
 	
-	public int getEmpCount() {
-		return empCount;
+	public int getSilenceCount() {
+		return silenceCount;
 	}
 	
-	public void subEmpCount() {
-		empCount--;
-		if (empCount <= 0) {
-			empCount = 0;
+	public void subSilenceCount() {
+		silenceCount--;
+		if (silenceCount <= 0) {
+			silenceCount = 0;
 			Buttons.getButtonSilence().setActive(false);
 		}
 	}
 
-	public void addEmpCount() {
-		empCount++;
+	public void addSilenceCount() {
+		silenceCount++;
 		Buttons.getButtonSilence().setActive(true);
 	}
 
-	public int getNewTowerCount() {
-		return newTowerCount;
+	public int getBuildCount() {
+		return buildCount;
 	}
 
-	public void addNewTowerCount() {
-		newTowerCount++;
+	public void addBuildCount() {
+		buildCount++;
 		Buttons.getButtonNewTower().setActive(true);
 	}
 	
-	public void subNewTowerCount() {
-		newTowerCount--;
-		if (newTowerCount <= 0) {
-			newTowerCount = 0;
+	public void subBuildCount() {
+		buildCount--;
+		if (buildCount <= 0) {
+			buildCount = 0;
 			Buttons.getButtonNewTower().setActive(false);
 		}
 	}
 
-	public int getDestroyTowerCount() {
-		return destroyTowerCount;
+	public int getShootCount() {
+		return shootCount;
 	}
 
-	public void addDestroyTowerCount() {
-		destroyTowerCount++;
+	public void addShootCount() {
+		shootCount++;
 		Buttons.getButtonDestroyTower().setActive(true);
 	}
 	
-	public void subDestroyTowerCount() {
-		destroyTowerCount--;
-		if (destroyTowerCount <= 0) {
-			destroyTowerCount = 0;
+	public void subShootCount() {
+		shootCount--;
+		if (shootCount <= 0) {
+			shootCount = 0;
 			Buttons.getButtonDestroyTower().setActive(false);
 		}
 	}
 
-	public int getMultipleTowerCount() {
-		return multipleTowersCount;
+	public int getSkillCap() {
+		return skillCap;
 	}
 
-	public void addMultipleTowerCount() {
-		multipleTowersCount++;
+	public void addSkillCap() {
+		skillCap++;
 		Buttons.getButtonMultipleTowers().setActive(true);
 	}
 	
-	public void subMultipleTowersCount() {
-		multipleTowersCount--;
-		if (multipleTowersCount <= 0) {
-			multipleTowersCount = 0;
+	public void subSkillCap() {
+		skillCap--;
+		if (skillCap <= 0) {
+			skillCap = 0;
 			Buttons.getButtonMultipleTowers().setActive(false);
 		}
 	}
