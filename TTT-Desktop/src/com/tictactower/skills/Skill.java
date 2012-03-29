@@ -1,11 +1,29 @@
 package com.tictactower.skills;
 
-public abstract class Skill {
 
-	public final static void use(Skill skill) {
-		skill.execute();
+public class Skill {
+	
+	private SkillType flag;
+	
+	public void cancelSkill(){
+		flag = SkillType.NO_SKILL;
 	}
 	
-	public abstract void execute();
+	public void useSkill(SkillType skill){
+		if(skill == SkillType.SHOOT){
+				flag = skill;
+		}
+		if(skill == SkillType.BUILD){
+				flag = skill;
+		}
+		if(skill == SkillType.SILENCE){
+				flag = skill;
+		}
+	}
+	
+	public SkillType getFlag(){
+		return flag;
+	}
+	
 	
 }
