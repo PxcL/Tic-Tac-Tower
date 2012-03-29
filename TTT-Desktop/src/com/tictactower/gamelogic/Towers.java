@@ -43,13 +43,13 @@ public class Towers {
 		if(!firstPlayer.IsSilenced()){
 			for (Skill s : skillList)
 				if( s instanceof SkillDestroyTower){
-					firstPlayer.addDestroyTowerCount();
+					firstPlayer.addShootCount();
 				}else if(s instanceof SkillNewTower){
-					firstPlayer.addNewTowerCount();
+					firstPlayer.addBuildCount();
 				}else if(s instanceof SkillSilent){
-					firstPlayer.addEmpCount();
+					firstPlayer.addSilenceCount();
 				}else if(s instanceof SkillMultipleSkills){
-					firstPlayer.addMultipleTowerCount();
+					firstPlayer.addSkillCap();
 				}
 		}
 		
