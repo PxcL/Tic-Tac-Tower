@@ -5,11 +5,7 @@ import java.util.ArrayList;
 import com.tictactower.Game;
 import com.tictactower.gameboard.Gameboard;
 import com.tictactower.player.Player;
-import com.tictactower.skills.Skill;
-import com.tictactower.skills.SkillBuild;
-import com.tictactower.skills.SkillCap;
-import com.tictactower.skills.SkillShoot;
-import com.tictactower.skills.SkillSilence;
+import com.tictactower.skills.*;
 
 
 /*
@@ -36,20 +32,20 @@ public class Towers {
 		
 		//1. find cluster around x,y
 		field = FindClusterRecurse(new FieldIndex(x,y), field);
-		
+
 		//2. find towers in this cluster
-		ArrayList<Skill> skillList = FindTowersInCluster(field, firstPlayer); 
-				
+		ArrayList<SkillType> skillList = FindTowersInCluster(field, firstPlayer); 
+
 		//3. adding skills to the player
 		if(!firstPlayer.IsSilenced()){
-			for (Skill s : skillList)
-				if( s instanceof SkillShoot){
+			for (SkillType s : skillList)
+				if( s == SkillType.SHOOT){
 					firstPlayer.addShootCount();
-				}else if(s instanceof SkillBuild){
+				}else if(s == SkillType.BUILD){
 					firstPlayer.addBuildCount();
-				}else if(s instanceof SkillSilence){
+				}else if(s == SkillType.SILENCE){
 					firstPlayer.addSilenceCount();
-				}else if(s instanceof SkillCap){
+				}else if(s == SkillType.SKILLCAP){
 					firstPlayer.addSkillCap();
 				}
 		}
@@ -72,7 +68,7 @@ public class Towers {
 		return taken;
 	}
 	
-	private static ArrayList<Skill> FindTowersInCluster(boolean[][] cluster, Player player){
+	private static ArrayList<SkillType> FindTowersInCluster(boolean[][] cluster, Player player){
 		// checks if there is a piece in front of the given piece, 
 		// if there is, there might be a tower; calling specific find-tower functions
 		// does this for all 8 directions.
@@ -95,7 +91,7 @@ public class Towers {
 					
 			}
 		}
-		ArrayList<Skill> skillList = new ArrayList<Skill>();
+		ArrayList<SkillType> skillList = new ArrayList<SkillType>();
 		//marking the positions of the towers as built:
 		if(!player.IsSilenced()){
 			for( Towers t : towerList){
@@ -124,7 +120,7 @@ public class Towers {
 			Towers tow = new Towers(startPoint,direction);
 			tow.add(left);
 			tow.add(right);
-			tow.towerType = new SkillShoot();
+			tow.towerType = SkillType.SHOOT;
 			towerList.add(tow);
 		}
 		return towerList;
@@ -145,14 +141,14 @@ public class Towers {
 				Towers leftTower = new Towers(startPoint, direction); //initing the tower
 				leftTower.add(up);
 				leftTower.add(left);
-				leftTower.towerType = new SkillBuild();
+				leftTower.towerType = SkillType.BUILD;
 				towerList.add(leftTower);
 			}
 			if( rightPart ){
 				Towers rightTower = new Towers(startPoint, direction); //initing the tower
 				rightTower.add(up);
 				rightTower.add(right);
-				rightTower.towerType = new SkillBuild();
+				rightTower.towerType = SkillType.BUILD;
 				towerList.add(rightTower);
 			}
 			
@@ -176,7 +172,7 @@ public class Towers {
 				Towers leftTower = new Towers(startPoint, direction); //initing the tower
 				leftTower.add(left);
 				leftTower.add(up);
-				leftTower.towerType = new SkillSilence();
+				leftTower.towerType = SkillType.SILENCE;
 				towerList.add(leftTower);
 			}
 		}
@@ -186,7 +182,7 @@ public class Towers {
 				Towers rightTower = new Towers(startPoint, direction); //initing the tower
 				rightTower.add(left);
 				rightTower.add(up);
-				rightTower.towerType = new SkillSilence();
+				rightTower.towerType = SkillType.SILENCE;
 				towerList.add(rightTower);
 			}
 		}
@@ -206,7 +202,7 @@ public class Towers {
 				Towers tower = new Towers(startPoint, direction); //initing the tower
 				tower.add(right);
 				tower.add(down);
-				tower.towerType = new SkillCap();
+				tower.towerType = SkillType.SKILLCAP;
 				towerList.add(tower);
 			}
 		}
@@ -216,7 +212,7 @@ public class Towers {
 	// No-static properties (private only):
 
 	private ArrayList<FieldIndex> tower;
-	private Skill towerType;
+	private SkillType towerType;
 	
 	private Towers(){
 		tower = new ArrayList<FieldIndex>(4);
