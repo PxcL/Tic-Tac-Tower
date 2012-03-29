@@ -11,9 +11,9 @@ import com.tictactower.player.Player;
 import com.tictactower.player.Player1;
 import com.tictactower.player.Player2;
 import com.tictactower.skills.Skill;
-import com.tictactower.skills.SkillDestroyTower;
-import com.tictactower.skills.SkillNewTower;
-import com.tictactower.skills.SkillSilent;
+import com.tictactower.skills.SkillBuild;
+import com.tictactower.skills.SkillShoot;
+import com.tictactower.skills.SkillSilence;
 import com.tictactower.ui.Buttons;
 
 public class Game implements ApplicationListener {
@@ -129,33 +129,33 @@ public class Game implements ApplicationListener {
 	}
 	
 	public void IncSkillUse(Skill skill){
-		if(skill instanceof SkillDestroyTower){
+		if(skill instanceof SkillShoot){
 			activePlayer.IncShootUsage();
 		}
-		if(skill instanceof SkillNewTower){
+		if(skill instanceof SkillBuild){
 			activePlayer.IncBuildUsage();
 		}
-		if(skill instanceof SkillSilent){
+		if(skill instanceof SkillSilence){
 			activePlayer.IncSilenceUsage();
 		}
 	}
 	
 	public void useSkill(Skill skill){
-		if(skill instanceof SkillDestroyTower){
+		if(skill instanceof SkillShoot){
 			if(CanShoot()){
 				skill.execute();
 				IncSkillUse(skill);
 				activePlayer.subShootCount();
 			}
 		}
-		if(skill instanceof SkillNewTower){
+		if(skill instanceof SkillBuild){
 			if(CanBuild()){
 				skill.execute();
 				IncSkillUse(skill);
 				activePlayer.subBuildCount();
 			}
 		}
-		if(skill instanceof SkillSilent){
+		if(skill instanceof SkillSilence){
 			if(CanSilence()){
 				skill.execute();
 				IncSkillUse(skill);

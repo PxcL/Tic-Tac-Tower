@@ -18,7 +18,7 @@ public class ButtonSilence extends Button {
 
 	@Override
 	public void execute() {
-		Game.getInstance().getActivePlayer().subEmpCount();
+		Game.getInstance().getActivePlayer().subSilenceCount();
 		Gdx.app.log("Skill", "SIIIIIILEEEEEEEEENCE");
 	}
 }

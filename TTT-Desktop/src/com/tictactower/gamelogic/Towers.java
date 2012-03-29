@@ -6,10 +6,11 @@ import com.tictactower.Game;
 import com.tictactower.gameboard.Gameboard;
 import com.tictactower.player.Player;
 import com.tictactower.skills.Skill;
-import com.tictactower.skills.SkillDestroyTower;
-import com.tictactower.skills.SkillMultipleSkills;
-import com.tictactower.skills.SkillNewTower;
-import com.tictactower.skills.SkillSilent;
+import com.tictactower.skills.SkillBuild;
+import com.tictactower.skills.SkillCap;
+import com.tictactower.skills.SkillShoot;
+import com.tictactower.skills.SkillSilence;
+
 
 /*
  * Har laget alle tower-funksjonene, men de kalles ikke noe sted.
@@ -42,13 +43,13 @@ public class Towers {
 		//3. adding skills to the player
 		if(!firstPlayer.IsSilenced()){
 			for (Skill s : skillList)
-				if( s instanceof SkillDestroyTower){
+				if( s instanceof SkillShoot){
 					firstPlayer.addShootCount();
-				}else if(s instanceof SkillNewTower){
+				}else if(s instanceof SkillBuild){
 					firstPlayer.addBuildCount();
-				}else if(s instanceof SkillSilent){
+				}else if(s instanceof SkillSilence){
 					firstPlayer.addSilenceCount();
-				}else if(s instanceof SkillMultipleSkills){
+				}else if(s instanceof SkillCap){
 					firstPlayer.addSkillCap();
 				}
 		}
@@ -123,7 +124,7 @@ public class Towers {
 			Towers tow = new Towers(startPoint,direction);
 			tow.add(left);
 			tow.add(right);
-			tow.towerType = new SkillDestroyTower();
+			tow.towerType = new SkillShoot();
 			towerList.add(tow);
 		}
 		return towerList;
@@ -144,14 +145,14 @@ public class Towers {
 				Towers leftTower = new Towers(startPoint, direction); //initing the tower
 				leftTower.add(up);
 				leftTower.add(left);
-				leftTower.towerType = new SkillNewTower();
+				leftTower.towerType = new SkillBuild();
 				towerList.add(leftTower);
 			}
 			if( rightPart ){
 				Towers rightTower = new Towers(startPoint, direction); //initing the tower
 				rightTower.add(up);
 				rightTower.add(right);
-				rightTower.towerType = new SkillNewTower();
+				rightTower.towerType = new SkillBuild();
 				towerList.add(rightTower);
 			}
 			
@@ -175,7 +176,7 @@ public class Towers {
 				Towers leftTower = new Towers(startPoint, direction); //initing the tower
 				leftTower.add(left);
 				leftTower.add(up);
-				leftTower.towerType = new SkillSilent();
+				leftTower.towerType = new SkillSilence();
 				towerList.add(leftTower);
 			}
 		}
@@ -185,7 +186,7 @@ public class Towers {
 				Towers rightTower = new Towers(startPoint, direction); //initing the tower
 				rightTower.add(left);
 				rightTower.add(up);
-				rightTower.towerType = new SkillSilent();
+				rightTower.towerType = new SkillSilence();
 				towerList.add(rightTower);
 			}
 		}
@@ -205,7 +206,7 @@ public class Towers {
 				Towers tower = new Towers(startPoint, direction); //initing the tower
 				tower.add(right);
 				tower.add(down);
-				tower.towerType = new SkillMultipleSkills();
+				tower.towerType = new SkillCap();
 				towerList.add(tower);
 			}
 		}
