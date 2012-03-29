@@ -55,19 +55,19 @@ public class Graphics {
 	private Texture findTexture(Button button) {
 		if (button instanceof ButtonEndTurn) return Textures.BUTTON_END_TURN;
 		else if (button instanceof ButtonSilence) {
-			if (Game.getInstance().getActivePlayer().getEmpCount() > 0) return Textures.BUTTON_SILENCE_ACTIVE;
+			if (Game.getInstance().getActivePlayer().getSilenceCount() > 0) return Textures.BUTTON_SILENCE_ACTIVE;
 			else return Textures.BUTTON_SILENCE_DEACTIVE;
 		}
 		else if (button instanceof ButtonNewTower) {
-			if (Game.getInstance().getActivePlayer().getNewTowerCount() > 0) return Textures.BUTTON_NEW_TOWER_ACTIVE;
+			if (Game.getInstance().getActivePlayer().getBuildCount() > 0) return Textures.BUTTON_NEW_TOWER_ACTIVE;
 			else return Textures.BUTTON_NEW_TOWER_DEACTIVE;
 		}
 		else if (button instanceof ButtonDestroyTower) {
-			if (Game.getInstance().getActivePlayer().getDestroyTowerCount() > 0) return Textures.BUTTON_DESTROY_TOWER_ACTIVE;
+			if (Game.getInstance().getActivePlayer().getShootCount() > 0) return Textures.BUTTON_DESTROY_TOWER_ACTIVE;
 			else return Textures.BUTTON_DESTROY_TOWER_DEACTIVE;
 		}
 		else if (button instanceof ButtonMultipleTowers) {
-			if (Game.getInstance().getActivePlayer().getMultipleTowerCount() > 0) return Textures.BUTTON_MULTIPLE_TOWERS_ACTIVE;
+			if (Game.getInstance().getActivePlayer().getSkillCap() > 0) return Textures.BUTTON_MULTIPLE_TOWERS_ACTIVE;
 			else return Textures.BUTTON_MULTIPLE_TOWERS_DEACTIVE;
 		}
 		else return null;

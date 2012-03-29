@@ -1,6 +1,6 @@
 package com.tictactower.skills;
 
-public class SkillMultipleSkills extends Skill {
+public class SkillCap extends Skill {
 
 	@Override
 	public void execute() {

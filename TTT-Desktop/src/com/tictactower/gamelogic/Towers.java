@@ -65,19 +65,19 @@ public class Towers {
 						if(f.Up(i).Valid()){
 							int n = FindShootTower(i, f, cluster);//number of towers
 							for (int tmp=0; tmp<n; tmp++){
-								towerList.add(new SkillDestroyTower());
+								towerList.add(new SkillShoot());
 							}
 							n = FindBuildTower(i,f, cluster);
 							for (int tmp=0; tmp<n; tmp++){
-								towerList.add(new SkillNewTower());
+								towerList.add(new SkillBuild());
 							}
 							n = FindSilenceTower(i,f, cluster);
 							for (int tmp=0; tmp<n; tmp++){
-								towerList.add(new SkillSilent());
+								towerList.add(new SkillSilence());
 							}
 							n = FindMultipleSkillsTower(i,f, cluster);
 							for (int tmp=0; tmp<n; tmp++){
-								towerList.add(new SkillMultipleSkills());
+								towerList.add(new SkillCap());
 							}
 							
 						}

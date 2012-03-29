@@ -18,7 +18,7 @@ public class ButtonDestroyTower extends Button {
 
 	@Override
 	public void execute() {
-		Game.getInstance().getActivePlayer().subDestroyTowerCount();
+		Game.getInstance().getActivePlayer().subShootCount();
 		Gdx.app.log("Skill", "DESTROY!!!");
 	}
 }

@@ -1,6 +1,6 @@
 package com.tictactower.skills;
 
-public class SkillDestroyTower extends Skill {
+public class SkillShoot extends Skill {
 
 	@Override
 	public void execute() {
