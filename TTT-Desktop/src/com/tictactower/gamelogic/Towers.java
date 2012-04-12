@@ -31,9 +31,14 @@ public class Towers {
 		field = FindClusterRecurse(new FieldIndex(x,y), field);
 		
 		//2. find towers in this cluster
-		FindTowersInCluster(field); //ta vare på retur-variabel...
+		ArrayList<Skill> BuildList = new ArrayList<Skill>(FindTowersInCluster(field)); //ta vare på retur-variabel...
 		
 		//3. adding skills to the player
+		if(!Game.getInstance().getActivePlayer().isSilenced() || BuildList.isEmpty()){
+			for(Skill s : BuildList){
+				//if five-in-a-row detected, respond accordingly.
+			}
+		}
 	}
 	
 	
@@ -78,6 +83,10 @@ public class Towers {
 							n = FindMultipleSkillsTower(i,f, cluster);
 							for (int tmp=0; tmp<n; tmp++){
 								towerList.add(new SkillMultipleSkills());
+							}
+							n = FindFiveTower(i,f, cluster);
+							for (int tmp=0; tmp<n; tmp++){
+								//add response for five-in-a-row
 							}
 							
 						}
@@ -164,6 +173,23 @@ public class Towers {
 			FieldIndex down = right.Down(direction);
 			if( down.Valid() && cluster[down.x()][down.y()] ){
 				return 1;
+			}
+		}
+		return 0;
+	}
+	
+	private static int FindFiveTower(int direction, FieldIndex startPoint, boolean[][] cluster){
+		//checks for the three last pieces of a five-in-a-row tower in the given direction
+		//startPoint should be the second index
+		//returns number of found towers
+		FieldIndex up = startPoint.Up(direction);
+		if( up.Valid() && cluster[up.x()][up.y()] ){
+			up = up.Up(direction);
+			if( up.Valid() && cluster[up.x()][up.y()] ){
+				up = up.Up(direction);
+				if( up.Valid() && cluster[up.x()][up.y()] ){
+					return 1;
+				}
 			}
 		}
 		return 0;

@@ -16,6 +16,7 @@ public abstract class Player {
 	protected int newTowerCount = 0;
 	protected int destroyTowerCount = 0;
 	protected int multipleTowersCount = 0;
+	protected boolean silenced;
 	
 	protected ArrayList<Skill> skills;
 	
@@ -33,6 +34,10 @@ public abstract class Player {
 	
 	public void setNotUsedMark(boolean notUsedMark) {
 		this.notUsedMark = notUsedMark;
+	}
+	
+	public boolean isSilenced(){
+		return silenced;
 	}
 	
 	public int getEmpCount() {
