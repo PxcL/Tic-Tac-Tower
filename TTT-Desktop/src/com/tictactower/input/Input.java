@@ -6,6 +6,8 @@ import com.tictactower.Game;
 import com.tictactower.gameboard.Gameboard;
 import com.tictactower.gameboard.Mark;
 import com.tictactower.gameboard.Square;
+import com.tictactower.gamelogic.Towers;
+import com.tictactower.player.Player;
 import com.tictactower.ui.Button;
 import com.tictactower.ui.Buttons;
 
@@ -83,25 +85,39 @@ public class Input implements InputProcessor {
 	private void updateGameboard(int x, int y) {
 		/*
 		 *  Her finner man de relative posisjonene til trykket i forhold til spillbrettet.
-		 *  Merk at det mŒ trikses litt med y-posisjonen siden origo pŒ input er ¿verst til venstre, 
-		 *  mens origo nŒr man tegner er nederst til venstre.
+		 *  Merk at det mŒ trikses litt med y-posisjonen siden origo paa input er overst til venstre, 
+		 *  mens origo naar man tegner er nederst til venstre.
 		 */
 		x -= Gameboard.X_OFFSET;
 		y -= Gameboard.Y_OFFSET;
-		// SŒ deler man pŒ bredden/h¿yden til ruten for Œ fŒ hvilken rad/kolonne trykket kom i.
+		// Saa deler man paa bredden/hoyden til ruten for aa faa hvilken rad/kolonne trykket kom i.
 		x /= Square.EDGE_LENGTH;
 		y /= Square.EDGE_LENGTH;
 		if (Game.getInstance().getGameboard().getMark(x, y) == Mark.EMPTY) {
-			Game.getInstance().getActivePlayer().setMark(x, y, Game.getInstance().getActivePlayer());
-			Game.getInstance().getActivePlayer().setNotUsedMark(false);
-			Buttons.getButtonEndTurn().setActive(true);
+			Player activePlayer = Game.getInstance().getActivePlayer();
+			if(!activePlayer.isSilenced()){
+				activePlayer.setMark(x, y, activePlayer);
+				activePlayer.setNotUsedMark(false);
+				Buttons.getButtonEndTurn().setActive(true);
+			}else{ //if the player has been silenced
+				activePlayer.setMark(x, y, activePlayer);
+				if(Towers.findTowers(x, y, activePlayer)){ 
+					//this means that a tower has been found, and the move is illegal
+					Game.getInstance().getGameboard().clearMark(x, y);
+					//print something saying the move is illegal...
+				}else{
+					//the move is accepted
+					activePlayer.setNotUsedMark(false);
+					Buttons.getButtonEndTurn().setActive(true);					
+				}
+			}
 		}
 	}
 	
 	private void checkForButtonClicks(int x, int y) {
 		/*
 		 * Her itererer man gjennom liste med buttons. 
-		 * Hvis klikket/touchen traff en button sŒ kj¿rer mans den execute-metode.
+		 * Hvis klikket/touchen traff en button sŒ kj¿rer man dens execute-metode.
 		 */
 		for (Button button : Buttons.getButtonList()) {
 			if (x > button.getPosition().x && x < button.getPosition().x + button.getWidth()
