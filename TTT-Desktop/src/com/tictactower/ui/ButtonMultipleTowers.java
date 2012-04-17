@@ -18,7 +18,7 @@ public class ButtonMultipleTowers extends Button {
 
 	@Override
 	public void execute() {
-		Game.getInstance().getActivePlayer().subMultipleTowersCount();
+		Game.getInstance().getActivePlayer().subSkillCap();
 		Gdx.app.log("Skill", "build... Build... BUILD!!!");
 	}
 }

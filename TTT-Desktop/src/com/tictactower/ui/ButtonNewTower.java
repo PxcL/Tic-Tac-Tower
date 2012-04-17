@@ -18,7 +18,7 @@ public class ButtonNewTower extends Button {
 
 	@Override
 	public void execute() {
-		Game.getInstance().getActivePlayer().subNewTowerCount();
+		Game.getInstance().getActivePlayer().subBuildCount();
 		Gdx.app.log("Skill", "NEW TOWAAAR!");
 	}
 }

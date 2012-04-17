@@ -10,6 +10,7 @@ import com.tictactower.input.Input;
 import com.tictactower.player.Player;
 import com.tictactower.player.Player1;
 import com.tictactower.player.Player2;
+import com.tictactower.skills.Skill;
 import com.tictactower.ui.Buttons;
 
 public class Game implements ApplicationListener {
@@ -29,6 +30,7 @@ public class Game implements ApplicationListener {
 	private Player2 player2;
 	private Graphics graphics;
 	private Buttons buttons;
+	private Skill skill;
 	
 	private Player activePlayer;
 	
@@ -51,6 +53,8 @@ public class Game implements ApplicationListener {
 		activePlayer.setNotUsedMark(true);
 		
 		spriteBatch = new SpriteBatch();
+		
+		
 	}
 
 	@Override
@@ -93,19 +97,59 @@ public class Game implements ApplicationListener {
 		return buttons;
 	}
 	
+	public Skill getSkill(){
+		return skill;
+	}
+	
 	public Player getActivePlayer() {
 		return activePlayer;
 	}
 	
 	public void changeActivePlayer() {
 		activePlayer.setNotUsedMark(false);
-		activePlayer.addEmpCount();
-		activePlayer.addDestroyTowerCount();
+		activePlayer.addSilenceCount();
+		activePlayer.addShootCount();
+		activePlayer.ResetSkillUsage();
 		if (activePlayer instanceof Player1)
 			activePlayer = player2;
 		else
 			activePlayer = player1;
 		activePlayer.setNotUsedMark(true);
-		Gdx.app.log("EMP", Integer.toString(Game.getInstance().getActivePlayer().getEmpCount()));
+		Gdx.app.log("EMP", Integer.toString(Game.getInstance().getActivePlayer().getSilenceCount()));
 	}
+	
+	public boolean canUseSkill(SkillType st){
+		if(st == SkillType.SHOOT){
+			return (activePlayer.GetShootUsage()<activePlayer.getSkillCap() && !activePlayer.IsSilenced() && activePlayer.getShootCount()>0);
+		}
+		if(st == SkillType.BUILD){
+			return (activePlayer.GetBuildUsage()<activePlayer.getSkillCap() && !activePlayer.IsSilenced() && activePlayer.getBuildCount()>0);
+		}
+		if(st == SkillType.SILENCE){
+			return (activePlayer.GetSilenceUsage()<activePlayer.getSkillCap() && !activePlayer.IsSilenced() && activePlayer.getSilenceCount()>0);
+		}
+		return false;
+	}
+	
+	public boolean chooseSkill(SkillType st){
+		if(!canUseSkill(st)){
+			skill.cancelSkill();
+			return false;
+		}
+		skill.useSkill(st);
+		return true;
+	}
+	
+	public void incSkillUse(){
+		if(skill.getFlag() == SkillType.SHOOT){
+			activePlayer.IncShootUsage();
+		}
+		if(skill.getFlag() == SkillType.BUILD){
+			activePlayer.IncBuildUsage();
+		}
+		if(skill.getFlag() == SkillType.SILENCE){
+			activePlayer.IncSilenceUsage();
+		}
+	}
+	
 }

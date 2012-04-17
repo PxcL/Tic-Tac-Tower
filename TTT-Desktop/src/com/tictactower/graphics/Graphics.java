@@ -5,14 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tictactower.Game;
 import com.tictactower.gameboard.Mark;
 import com.tictactower.gameboard.Square;
-import com.tictactower.ui.Button;
-import com.tictactower.ui.ButtonDestroyTower;
-import com.tictactower.ui.ButtonEndTurn;
-import com.tictactower.ui.ButtonMultipleTowers;
-import com.tictactower.ui.ButtonNewTower;
-import com.tictactower.ui.ButtonSilence;
-import com.tictactower.ui.Buttons;
-
+import com.tictactower.ui.*;
 public class Graphics {
 	
 	public void draw(SpriteBatch spriteBatch) {
@@ -55,20 +48,20 @@ public class Graphics {
 	private Texture findTexture(Button button) {
 		if (button instanceof ButtonEndTurn) return Textures.BUTTON_END_TURN;
 		else if (button instanceof ButtonSilence) {
-			if (Game.getInstance().getActivePlayer().getEmpCount() > 0) return Textures.BUTTON_SILENCE_ACTIVE;
+			if (Game.getInstance().getActivePlayer().getSilenceCount() > 0) return Textures.BUTTON_SILENCE_ACTIVE;
 			else return Textures.BUTTON_SILENCE_DEACTIVE;
 		}
 		else if (button instanceof ButtonNewTower) {
-			if (Game.getInstance().getActivePlayer().getNewTowerCount() > 0) return Textures.BUTTON_NEW_TOWER_ACTIVE;
-			else return Textures.BUTTON_NEW_TOWER_DEACTIVE;
+			if (Game.getInstance().getActivePlayer().getBuildCount() > 0) return Textures.BUTTON_BUILD_ACTIVE;
+			else return Textures.BUTTON_BUILD_DEACTIVE;
 		}
 		else if (button instanceof ButtonDestroyTower) {
-			if (Game.getInstance().getActivePlayer().getDestroyTowerCount() > 0) return Textures.BUTTON_DESTROY_TOWER_ACTIVE;
-			else return Textures.BUTTON_DESTROY_TOWER_DEACTIVE;
+			if (Game.getInstance().getActivePlayer().getShootCount() > 0) return Textures.BUTTON_SHOOT_ACTIVE;
+			else return Textures.BUTTON_SHOOT_DEACTIVE;
 		}
 		else if (button instanceof ButtonMultipleTowers) {
-			if (Game.getInstance().getActivePlayer().getMultipleTowerCount() > 0) return Textures.BUTTON_MULTIPLE_TOWERS_ACTIVE;
-			else return Textures.BUTTON_MULTIPLE_TOWERS_DEACTIVE;
+			if (Game.getInstance().getActivePlayer().getSkillCap() > 0) return Textures.BUTTON_SKILL_CAP_ACTIVE;
+			else return Textures.BUTTON_SKILL_CAP_DEACTIVE;
 		}
 		else return null;
 	}

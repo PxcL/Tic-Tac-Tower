@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import com.tictactower.Game;
 import com.tictactower.gameboard.Gameboard;
+import com.tictactower.player.Player;
 import com.tictactower.skills.*;
+
 
 /*
  * Har laget alle tower-funksjonene, men de kalles ikke noe sted.
@@ -16,9 +18,10 @@ import com.tictactower.skills.*;
 
 public class Towers {
 
-	public static void findTowers(int x, int y) {
-		// The input variables are the position of the new mark.
+	public static boolean findTowers(int x, int y, Player activePlayer) {
+		// The input variables is the position of the new mark.
 		// Find towers by iterating from that square on the board
+		// Returning a bool; true if one or more towers has been found
 		
 		boolean[][] field = new boolean[Gameboard.NUMBER_OF_COLUMNS][Gameboard.NUMBER_OF_ROWS];
 		for(int i=0; i<Gameboard.NUMBER_OF_COLUMNS; i++){ // initializing the array...
@@ -29,20 +32,29 @@ public class Towers {
 		
 		//1. find cluster around x,y
 		field = FindClusterRecurse(new FieldIndex(x,y), field);
-		
+
 		//2. find towers in this cluster
 		ArrayList<Skill> BuildList = new ArrayList<Skill>(FindTowersInCluster(field)); //ta vare på retur-variabel...
 		
 		//3. adding skills to the player
-		if(!Game.getInstance().getActivePlayer().isSilenced() || BuildList.isEmpty()){
-			for(Skill s : BuildList){
-				//if five-in-a-row detected, respond accordingly.
+		ArrayList<SkillType> skillList = FindTowersInCluster(field, activePlayer); 
+		if(!activePlayer.IsSilenced()){
+			for (SkillType s : skillList){
+				if( s == SkillType.SHOOT){
+					activePlayer.addShootCount();
+				}else if(s == SkillType.BUILD){
+					activePlayer.addBuildCount();
+				}else if(s == SkillType.SILENCE){
+					activePlayer.addSilenceCount();
+				}else if(s == SkillType.SKILLCAP){
+					activePlayer.addSkillCap();
 			}
 		}
+		return !skillList.isEmpty();
 	}
 	
 	
-	private static boolean[][] FindClusterRecurse(FieldIndex ind, boolean[][] taken ){
+	private static boolean[][] FindClusterRecurse(FieldIndex ind, boolean[][] taken){
 		//recursive function that finds a cluster
 		Gameboard board = Game.getInstance().getGameboard();
 		
@@ -56,11 +68,12 @@ public class Towers {
 		return taken;
 	}
 	
-	private static ArrayList<Skill> FindTowersInCluster(boolean[][] cluster){
+	private static ArrayList<SkillType> FindTowersInCluster(boolean[][] cluster, Player player){
 		// checks if there is a piece in front of the given piece, 
 		// if there is, there might be a tower; calling specific find-tower functions
 		// does this for all 8 directions.
-		ArrayList<Skill> towerList = new ArrayList<Skill>();
+
+		ArrayList<Towers> towerList = new ArrayList<Towers>();
 		for (int nx=0; nx<Gameboard.NUMBER_OF_COLUMNS; nx++){ //checking for all elements in the cluster...
 			for (int ny=0; ny<Gameboard.NUMBER_OF_ROWS; ny++){
 				if( cluster[nx][ny]){
@@ -89,17 +102,31 @@ public class Towers {
 								//add response for five-in-a-row
 							}
 							
+
+							towerList.addAll(FindShootTower(i, f, cluster));//number of towers
+							towerList.addAll(FindBuildTower(i,f, cluster));
+							towerList.addAll(FindSilenceTower(i,f, cluster));
+							towerList.addAll(FindMultipleSkillsTower(i,f, cluster));
 						}
 					}
 				}
 					
 			}
 		}
-		return towerList;
-		// FEIL: den må si fra om tårnets posisjon
+		ArrayList<SkillType> skillList = new ArrayList<SkillType>();
+		//marking the positions of the towers as built:
+		if(!player.IsSilenced()){
+			for( Towers t : towerList){
+				for (FieldIndex f : t.tower){
+					Game.getInstance().getGameboard().setMarkToBuilt(f.x(), f.y(), player);
+				}
+				skillList.add(t.towerType);
+			}
+		}
+		return skillList;
 	}
 	
-	private static int FindShootTower(int direction, FieldIndex startPoint, boolean[][] cluster){
+	private static ArrayList<Towers> FindShootTower(int direction, FieldIndex startPoint, boolean[][] cluster){
 		//checks for the two last pieces of a shoot tower in the given direction
 		//startpoint should be the second index
 		//returns number of found towers
@@ -109,18 +136,23 @@ public class Towers {
 		boolean leftPart = left.Valid() && cluster[left.x()][left.y()];
 		boolean rightPart = right.Valid() && cluster[right.x()][right.y()];
 		
+		ArrayList<Towers> towerList = new ArrayList<Towers>();
+		
 		if (leftPart && rightPart){
-			return 1;
-		}else{
-			return 0;
+			Towers tow = new Towers(startPoint,direction);
+			tow.add(left);
+			tow.add(right);
+			tow.towerType = SkillType.SHOOT;
+			towerList.add(tow);
 		}
-		// FEIL: den må si fra om tårnets posisjon
+		return towerList;
 	}
-	private static int FindBuildTower(int direction, FieldIndex startPoint, boolean[][] cluster){
+	private static ArrayList<Towers> FindBuildTower(int direction, FieldIndex startPoint, boolean[][] cluster){
 		//checks for the two last pieces of a build tower in the given direction
 		//startPoint should be the second index
 		//returns number of found towers
-		int nrOfTowers = 0;
+
+		ArrayList<Towers> towerList = new ArrayList<Towers>();
 		FieldIndex up = startPoint.Up(direction);
 		if(up.Valid() && cluster[up.x()][up.y()]){
 			FieldIndex right = up.Right(direction);
@@ -128,22 +160,29 @@ public class Towers {
 			boolean leftPart = left.Valid() && cluster[left.x()][left.y()];
 			boolean rightPart = right.Valid() && cluster[right.x()][right.y()];
 			if (leftPart){
-				nrOfTowers++;
+				Towers leftTower = new Towers(startPoint, direction); //initing the tower
+				leftTower.add(up);
+				leftTower.add(left);
+				leftTower.towerType = SkillType.BUILD;
+				towerList.add(leftTower);
 			}
 			if( rightPart ){
-				nrOfTowers++;
+				Towers rightTower = new Towers(startPoint, direction); //initing the tower
+				rightTower.add(up);
+				rightTower.add(right);
+				rightTower.towerType = SkillType.BUILD;
+				towerList.add(rightTower);
 			}
 			
 		}
-		return nrOfTowers;
-		// FEIL: den må si fra om tårnets posisjon
+		return towerList;
 	}
-	private static int FindSilenceTower(int direction, FieldIndex startPoint, boolean[][] cluster){
+	private static ArrayList<Towers> FindSilenceTower(int direction, FieldIndex startPoint, boolean[][] cluster){
 		//checks for the two last pieces of a silence tower in the given direction
 		//startPoint should be the second index
 		//returns number of found towers
-		int nrOfTowers = 0;
 		
+		ArrayList<Towers> towerList = new ArrayList<Towers>();
 		FieldIndex right = startPoint.Right(direction);
 		FieldIndex left = startPoint.Left(direction);
 		boolean leftPart = left.Valid() && cluster[left.x()][left.y()];
@@ -152,32 +191,47 @@ public class Towers {
 		if(leftPart){
 			FieldIndex up = left.Up(direction);
 			if(up.Valid() && cluster[up.x()][up.y()]){
-				nrOfTowers++;
+				Towers leftTower = new Towers(startPoint, direction); //initing the tower
+				leftTower.add(left);
+				leftTower.add(up);
+				leftTower.towerType = SkillType.SILENCE;
+				towerList.add(leftTower);
 			}
 		}
 		if(rightPart){
 			FieldIndex up = right.Up(direction);
 			if(up.Valid() && cluster[up.x()][up.y()]){
-				nrOfTowers++;
+				Towers rightTower = new Towers(startPoint, direction); //initing the tower
+				rightTower.add(left);
+				rightTower.add(up);
+				rightTower.towerType = SkillType.SILENCE;
+				towerList.add(rightTower);
 			}
 		}
-		return nrOfTowers;
+		return towerList;
 		// FEIL: den må si fra om tårnets posisjon
 	}
-	private static int FindMultipleSkillsTower(int direction, FieldIndex startPoint, boolean[][] cluster){
+	private static ArrayList<Towers> FindMultipleSkillsTower(int direction, FieldIndex startPoint, boolean[][] cluster){
 		//checks for the two last pieces of a multiple-skills tower in the given direction
 		//startPoint should be the second index
 		//returns number of found towers
+		
+		ArrayList<Towers> towerList = new ArrayList<Towers>();
 		FieldIndex right = startPoint.Right(direction);
 		if( right.Valid() && cluster[right.x()][right.y()] ){
 			FieldIndex down = right.Down(direction);
 			if( down.Valid() && cluster[down.x()][down.y()] ){
-				return 1;
+				Towers tower = new Towers(startPoint, direction); //initing the tower
+				tower.add(right);
+				tower.add(down);
+				tower.towerType = SkillType.SKILLCAP;
+				towerList.add(tower);
 			}
 		}
-		return 0;
+		return towerList;
 	}
 	
+
 	private static int FindFiveTower(int direction, FieldIndex startPoint, boolean[][] cluster){
 		//checks for the three last pieces of a five-in-a-row tower in the given direction
 		//startPoint should be the second index
@@ -194,4 +248,22 @@ public class Towers {
 		}
 		return 0;
 	}
+
+	// No-static properties (private only):
+
+	private ArrayList<FieldIndex> tower;
+	private SkillType towerType;
+	
+	private Towers(){
+		tower = new ArrayList<FieldIndex>(4);
+	}
+	private Towers(FieldIndex f, int direction){
+		tower.add(f.Down(direction));
+		tower.add(f);
+	}
+
+	private void add(FieldIndex f){
+		tower.add(f);
+	}
+	
 }
