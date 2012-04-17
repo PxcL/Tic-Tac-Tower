@@ -34,11 +34,11 @@ public class Towers {
 		field = FindClusterRecurse(new FieldIndex(x,y), field);
 
 		//2. find towers in this cluster
-		ArrayList<Skill> BuildList = new ArrayList<Skill>(FindTowersInCluster(field)); //ta vare på retur-variabel...
+		ArrayList<SkillType> skillList = FindTowersInCluster(field, activePlayer); 
 		
 		//3. adding skills to the player
-		ArrayList<SkillType> skillList = FindTowersInCluster(field, activePlayer); 
-		if(!activePlayer.IsSilenced()){
+		
+		if(!activePlayer.isSilenced()){
 			for (SkillType s : skillList){
 				if( s == SkillType.SHOOT){
 					activePlayer.addShootCount();
@@ -48,6 +48,7 @@ public class Towers {
 					activePlayer.addSilenceCount();
 				}else if(s == SkillType.SKILLCAP){
 					activePlayer.addSkillCap();
+				}
 			}
 		}
 		return !skillList.isEmpty();
@@ -77,45 +78,23 @@ public class Towers {
 		for (int nx=0; nx<Gameboard.NUMBER_OF_COLUMNS; nx++){ //checking for all elements in the cluster...
 			for (int ny=0; ny<Gameboard.NUMBER_OF_ROWS; ny++){
 				if( cluster[nx][ny]){
-					
+
 					for (int i=0; i<8; i++){ //...in all directions
 						FieldIndex f = new FieldIndex(nx,ny);
 						if(f.Up(i).Valid()){
-							int n = FindShootTower(i, f, cluster);//number of towers
-							for (int tmp=0; tmp<n; tmp++){
-								towerList.add(new SkillDestroyTower());
-							}
-							n = FindBuildTower(i,f, cluster);
-							for (int tmp=0; tmp<n; tmp++){
-								towerList.add(new SkillNewTower());
-							}
-							n = FindSilenceTower(i,f, cluster);
-							for (int tmp=0; tmp<n; tmp++){
-								towerList.add(new SkillSilent());
-							}
-							n = FindMultipleSkillsTower(i,f, cluster);
-							for (int tmp=0; tmp<n; tmp++){
-								towerList.add(new SkillMultipleSkills());
-							}
-							n = FindFiveTower(i,f, cluster);
-							for (int tmp=0; tmp<n; tmp++){
-								//add response for five-in-a-row
-							}
-							
-
 							towerList.addAll(FindShootTower(i, f, cluster));//number of towers
 							towerList.addAll(FindBuildTower(i,f, cluster));
 							towerList.addAll(FindSilenceTower(i,f, cluster));
 							towerList.addAll(FindMultipleSkillsTower(i,f, cluster));
+							towerList.addAll(FindFiveTower(i,f,cluster));
 						}
 					}
 				}
-					
 			}
 		}
 		ArrayList<SkillType> skillList = new ArrayList<SkillType>();
 		//marking the positions of the towers as built:
-		if(!player.IsSilenced()){
+		if(!player.isSilenced()){
 			for( Towers t : towerList){
 				for (FieldIndex f : t.tower){
 					Game.getInstance().getGameboard().setMarkToBuilt(f.x(), f.y(), player);
@@ -232,21 +211,26 @@ public class Towers {
 	}
 	
 
-	private static int FindFiveTower(int direction, FieldIndex startPoint, boolean[][] cluster){
+	private static ArrayList<Towers> FindFiveTower(int direction, FieldIndex startPoint, boolean[][] cluster){
 		//checks for the three last pieces of a five-in-a-row tower in the given direction
 		//startPoint should be the second index
 		//returns number of found towers
+		ArrayList<Towers> towerList = new ArrayList<Towers>();
+		Towers tower = new Towers(startPoint, direction);
 		FieldIndex up = startPoint.Up(direction);
 		if( up.Valid() && cluster[up.x()][up.y()] ){
 			up = up.Up(direction);
+			tower.add(up);
 			if( up.Valid() && cluster[up.x()][up.y()] ){
 				up = up.Up(direction);
+				tower.add(up);
 				if( up.Valid() && cluster[up.x()][up.y()] ){
-					return 1;
+					towerList.add(tower);
+					return towerList;
 				}
 			}
 		}
-		return 0;
+		return towerList; // returning the empty tower list
 	}
 
 	// No-static properties (private only):

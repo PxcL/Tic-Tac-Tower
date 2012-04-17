@@ -11,6 +11,7 @@ import com.tictactower.player.Player;
 import com.tictactower.player.Player1;
 import com.tictactower.player.Player2;
 import com.tictactower.skills.Skill;
+import com.tictactower.skills.SkillType;
 import com.tictactower.ui.Buttons;
 
 public class Game implements ApplicationListener {
@@ -120,13 +121,13 @@ public class Game implements ApplicationListener {
 	
 	public boolean canUseSkill(SkillType st){
 		if(st == SkillType.SHOOT){
-			return (activePlayer.GetShootUsage()<activePlayer.getSkillCap() && !activePlayer.IsSilenced() && activePlayer.getShootCount()>0);
+			return (activePlayer.GetShootUsage()<activePlayer.getSkillCap() && !activePlayer.isSilenced() && activePlayer.getShootCount()>0);
 		}
 		if(st == SkillType.BUILD){
-			return (activePlayer.GetBuildUsage()<activePlayer.getSkillCap() && !activePlayer.IsSilenced() && activePlayer.getBuildCount()>0);
+			return (activePlayer.GetBuildUsage()<activePlayer.getSkillCap() && !activePlayer.isSilenced() && activePlayer.getBuildCount()>0);
 		}
 		if(st == SkillType.SILENCE){
-			return (activePlayer.GetSilenceUsage()<activePlayer.getSkillCap() && !activePlayer.IsSilenced() && activePlayer.getSilenceCount()>0);
+			return (activePlayer.GetSilenceUsage()<activePlayer.getSkillCap() && !activePlayer.isSilenced() && activePlayer.getSilenceCount()>0);
 		}
 		return false;
 	}

@@ -27,8 +27,7 @@ public abstract class Player {
 	protected int silenceUsage = 0;
 	protected int buildUsage = 0;
 	protected int shootUsage = 0;
-	
-	protected boolean isSilenced = false;
+
 	
 	protected ArrayList<Skill> skills;
 	
@@ -50,6 +49,9 @@ public abstract class Player {
 	
 	public boolean isSilenced(){
 		return silenced;
+	}
+	public void setSilenced(boolean b){
+		silenced = b;
 	}
 	
 	public int getEmpCount() {
@@ -152,14 +154,6 @@ public abstract class Player {
 		silenceUsage = 0;
 		buildUsage = 0;
 		shootUsage = 0;
-	}
-	
-	public boolean IsSilenced(){
-		return isSilenced;
-	}
-	
-	public void SetSilenced(boolean b){
-		isSilenced = b;
 	}
 	
 }
