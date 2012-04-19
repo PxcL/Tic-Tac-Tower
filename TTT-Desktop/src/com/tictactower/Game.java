@@ -49,6 +49,7 @@ public class Game implements ApplicationListener {
 		player2 = new Player2();
 		graphics = new Graphics();
 		buttons = new Buttons();
+		skill = new Skill();
 		
 		activePlayer = player1;
 		activePlayer.setNotUsedMark(true);
@@ -115,7 +116,6 @@ public class Game implements ApplicationListener {
 			activePlayer = player1;
 		activePlayer.setNotUsedMark(true);
 		skill.cancelSkill();
-		Gdx.app.log("EMP", Integer.toString(Game.getInstance().getActivePlayer().getSilenceCount()));
 	}
 	
 	public boolean canUseSkill(SkillType st){

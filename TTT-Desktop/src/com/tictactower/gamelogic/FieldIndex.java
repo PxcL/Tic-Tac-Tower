@@ -20,6 +20,9 @@ public class FieldIndex{
 	public int y(){
 		return y;
 	}
+	public String toString(){
+		return "("+Integer.toString(x)+","+Integer.toString(y)+")";
+	}
 	public boolean Valid(){
 		return ( x>=0 && x<Gameboard.NUMBER_OF_ROWS ) && ( y>=0 && y<Gameboard.NUMBER_OF_COLUMNS );
 	}

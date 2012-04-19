@@ -102,6 +102,7 @@ public class Input implements InputProcessor {
 						activePlayer.setMark(x, y);
 						activePlayer.setNotUsedMark(false);
 						Buttons.getButtonEndTurn().setActive(true);
+						Towers.findTowers(x, y, activePlayer);
 					}else{ //if the player has been silenced
 						activePlayer.setMark(x, y);
 						if(Towers.findTowers(x, y, activePlayer)){ 
@@ -122,19 +123,37 @@ public class Input implements InputProcessor {
 					if(Game.getInstance().getGameboard().getMark(x, y) == Mark.P2_ACTIVE){
 						Game.getInstance().getGameboard().setMark(x, y, Mark.DESTROYED);
 						activePlayer.subShootCount();
+						activePlayer.IncShootUsage();
 					}
 				}else{
 					if(Game.getInstance().getGameboard().getMark(x, y) == Mark.P1_ACTIVE){
 						Game.getInstance().getGameboard().setMark(x, y, Mark.DESTROYED);
 						activePlayer.subShootCount();
+						activePlayer.IncShootUsage();
 					}
 				}
 				break;
 				
 			case BUILD:
-				if(Game.getInstance().getGameboard().getMark(x, y) == Mark.EMPTY){
-					activePlayer.setMark(x, y);
-					activePlayer.subBuildCount();
+				if (Game.getInstance().getGameboard().getMark(x, y) == Mark.EMPTY) {
+					if(!activePlayer.isSilenced()){
+						activePlayer.setMark(x, y);
+						activePlayer.subBuildCount();
+						activePlayer.IncBuildUsage();
+						Towers.findTowers(x, y, activePlayer);
+					}else{ //if the player has been silenced
+						activePlayer.setMark(x, y);
+						if(Towers.findTowers(x, y, activePlayer)){ 
+							//this means that a tower has been found, and the move is illegal
+							Game.getInstance().getGameboard().clearMark(x, y);
+							//print something saying the move is illegal...
+						}else{
+							//the move is accepted
+							activePlayer.subBuildCount();
+							activePlayer.IncBuildUsage();
+
+						}
+					}
 				}
 				break;
 				
@@ -145,6 +164,7 @@ public class Input implements InputProcessor {
 					Game.getInstance().getPlayer1().setSilenced(true);
 				}
 				activePlayer.subSilenceCount();
+				activePlayer.IncSilenceUsage();
 				break;
 		}
 		Game.getInstance().getSkill().cancelSkill();

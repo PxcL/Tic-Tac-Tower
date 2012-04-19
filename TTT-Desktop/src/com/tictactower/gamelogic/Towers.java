@@ -2,10 +2,12 @@ package com.tictactower.gamelogic;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.tictactower.Game;
 import com.tictactower.gameboard.Gameboard;
+import com.tictactower.gameboard.Mark;
 import com.tictactower.player.Player;
-import com.tictactower.skills.*;
+import com.tictactower.skills.SkillType;
 
 
 /*
@@ -22,7 +24,6 @@ public class Towers {
 		// The input variables is the position of the new mark.
 		// Find towers by iterating from that square on the board
 		// Returning a bool; true if one or more towers has been found
-		
 		boolean[][] field = new boolean[Gameboard.NUMBER_OF_COLUMNS][Gameboard.NUMBER_OF_ROWS];
 		for(int i=0; i<Gameboard.NUMBER_OF_COLUMNS; i++){ // initializing the array...
 			for(int j=0; j<Gameboard.NUMBER_OF_ROWS; j++){
@@ -31,7 +32,20 @@ public class Towers {
 		}
 		
 		//1. find cluster around x,y
-		field = FindClusterRecurse(new FieldIndex(x,y), field);
+		field = FindClusterRecurse(new FieldIndex(x,y), field, activePlayer.getActiveMark());
+		
+		//printing the cluster for debug: 
+//		Gdx.app.log("Tower", "Found cluster:");
+//		for(int i=0; i<Gameboard.NUMBER_OF_ROWS; i++){ 
+//			String s = "";
+//			for(int j=0; j<Gameboard.NUMBER_OF_COLUMNS; j++){
+//				if(field[j][Gameboard.NUMBER_OF_ROWS-i-1])
+//					s += "*";
+//				else
+//					s += " ";
+//			}
+//			Gdx.app.log("", s);
+//		}
 
 		//2. find towers in this cluster
 		ArrayList<SkillType> skillList = FindTowersInCluster(field, activePlayer); 
@@ -39,31 +53,37 @@ public class Towers {
 		//3. adding skills to the player
 		
 		if(!activePlayer.isSilenced()){
+			String debugString = "";
 			for (SkillType s : skillList){
 				if( s == SkillType.SHOOT){
 					activePlayer.addShootCount();
+					debugString += "shoot, ";
 				}else if(s == SkillType.BUILD){
 					activePlayer.addBuildCount();
+					debugString += "build, ";
 				}else if(s == SkillType.SILENCE){
 					activePlayer.addSilenceCount();
+					debugString += "silence, ";
 				}else if(s == SkillType.SKILLCAP){
 					activePlayer.addSkillCap();
+					debugString += "skillCap, ";
 				}
 			}
+			Gdx.app.log("Tower", "Found skills: "+debugString);
 		}
 		return !skillList.isEmpty();
 	}
 	
 	
-	private static boolean[][] FindClusterRecurse(FieldIndex ind, boolean[][] taken){
+	private static boolean[][] FindClusterRecurse(FieldIndex ind, boolean[][] taken, Mark type){
 		//recursive function that finds a cluster
 		Gameboard board = Game.getInstance().getGameboard();
 		
 		taken[(int)ind.x()][(int)ind.y()] = true;
 		
 		for (FieldIndex i : ind.GetNeigbours()){
-			if( board.getMark(i.x(), ind.y()) == board.getMark(i.x(), ind.y()) && taken[i.x()][i.y()] == false ){
-				taken = FindClusterRecurse(i, taken);
+			if( board.getMark(i.x(), i.y()) == type && taken[i.x()][i.y()] == false ){
+				taken = FindClusterRecurse(i, taken, type);
 			}
 		}
 		return taken;
@@ -81,12 +101,16 @@ public class Towers {
 
 					for (int i=0; i<8; i++){ //...in all directions
 						FieldIndex f = new FieldIndex(nx,ny);
-						if(f.Up(i).Valid()){
-							towerList.addAll(FindShootTower(i, f, cluster));//number of towers
-							towerList.addAll(FindBuildTower(i,f, cluster));
-							towerList.addAll(FindSilenceTower(i,f, cluster));
-							towerList.addAll(FindMultipleSkillsTower(i,f, cluster));
-							towerList.addAll(FindFiveTower(i,f,cluster));
+						FieldIndex start = f.Up(i);
+						if(start.Valid() && cluster[start.x()][start.y()]){
+							towerList.addAll(FindShootTower(i, start, cluster));
+							towerList.addAll(FindBuildTower(i,start, cluster));
+							if(i < 4){
+								towerList.addAll(FindSilenceTower(i,start, cluster));
+								towerList.addAll(FindFiveTower(i,start,cluster));
+							}if(i < 2){
+								towerList.addAll(FindMultipleSkillsTower(i,start, cluster));
+							}
 						}
 					}
 				}
@@ -95,8 +119,13 @@ public class Towers {
 		ArrayList<SkillType> skillList = new ArrayList<SkillType>();
 		//marking the positions of the towers as built:
 		if(!player.isSilenced()){
+			//Gdx.app.log("Tower", "found "+Integer.toString(towerList.size())+" towers:");
 			for( Towers t : towerList){
+				//Gdx.app.log("", t.toString());
 				for (FieldIndex f : t.tower){
+					if(!f.Valid()){
+						Gdx.app.error("Tower", "Invalid Tower: "+t.toString());
+					}
 					Game.getInstance().getGameboard().setMarkToBuilt(f.x(), f.y(), player);
 				}
 				skillList.add(t.towerType);
@@ -181,14 +210,14 @@ public class Towers {
 			FieldIndex up = right.Up(direction);
 			if(up.Valid() && cluster[up.x()][up.y()]){
 				Towers rightTower = new Towers(startPoint, direction); //initing the tower
-				rightTower.add(left);
+				rightTower.add(right);
 				rightTower.add(up);
 				rightTower.towerType = SkillType.SILENCE;
 				towerList.add(rightTower);
 			}
 		}
 		return towerList;
-		// FEIL: den må si fra om tårnets posisjon
+
 	}
 	private static ArrayList<Towers> FindMultipleSkillsTower(int direction, FieldIndex startPoint, boolean[][] cluster){
 		//checks for the two last pieces of a multiple-skills tower in the given direction
@@ -242,12 +271,45 @@ public class Towers {
 		tower = new ArrayList<FieldIndex>(4);
 	}
 	private Towers(FieldIndex f, int direction){
+		tower = new ArrayList<FieldIndex>(4);
 		tower.add(f.Down(direction));
 		tower.add(f);
 	}
 
 	private void add(FieldIndex f){
 		tower.add(f);
+	}
+
+	public String toString(){
+		String s = towerType();
+		for (int i = 0; i<tower.size();i++){
+			s += tower.get(i).toString();
+			if( i < i-1)
+				s += ", ";
+		}
+		return s;
+	}
+	
+	private String towerType(){
+		String s;
+		switch(towerType){
+		case SHOOT:
+			s = "shoot: ";
+			break;
+		case BUILD:
+			s = "build: ";
+			break;
+		case SILENCE:
+			s = "silence: ";
+			break;
+		case SKILLCAP:
+			s = "skillCap: ";
+			break;
+		default:
+			s = "no tower";
+			break;
+		}
+		return s;
 	}
 	
 }

@@ -5,6 +5,10 @@ public class Skill {
 	
 	private SkillType flag;
 	
+	public Skill(){
+		flag = SkillType.NO_SKILL;
+	}
+	
 	public void cancelSkill(){
 		flag = SkillType.NO_SKILL;
 	}
