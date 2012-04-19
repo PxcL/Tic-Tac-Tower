@@ -114,6 +114,7 @@ public class Game implements ApplicationListener {
 		else
 			activePlayer = player1;
 		activePlayer.setNotUsedMark(true);
+		skill.cancelSkill();
 		Gdx.app.log("EMP", Integer.toString(Game.getInstance().getActivePlayer().getSilenceCount()));
 	}
 	

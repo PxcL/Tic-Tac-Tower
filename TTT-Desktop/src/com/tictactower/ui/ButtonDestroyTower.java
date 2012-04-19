@@ -3,6 +3,8 @@ package com.tictactower.ui;
 import com.badlogic.gdx.Gdx;
 import com.tictactower.Game;
 import com.tictactower.gameboard.Gameboard;
+import com.tictactower.player.Player;
+import com.tictactower.skills.SkillType;
 
 public class ButtonDestroyTower extends Button {
 	
@@ -18,7 +20,11 @@ public class ButtonDestroyTower extends Button {
 
 	@Override
 	public void execute() {
-		Game.getInstance().getActivePlayer().subShootCount();
-		Gdx.app.log("Skill", "DESTROY!!!");
+		Player activePlayer = Game.getInstance().getActivePlayer();
+		if(activePlayer.getShootCount()>0 && activePlayer.GetShootUsage()>=activePlayer.getSkillCap()){
+			Game.getInstance().getSkill().useSkill(SkillType.SHOOT);
+			Gdx.app.log("Skill", "DESTROY!!!");
+		}else{Gdx.app.log("Skill", "Cannot destroy!"); //For debug.
+		}
 	}
 }

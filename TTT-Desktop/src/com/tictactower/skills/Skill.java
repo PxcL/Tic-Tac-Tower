@@ -10,15 +10,7 @@ public class Skill {
 	}
 	
 	public void useSkill(SkillType skill){
-		if(skill == SkillType.SHOOT){
-				flag = skill;
-		}
-		if(skill == SkillType.BUILD){
-				flag = skill;
-		}
-		if(skill == SkillType.SILENCE){
-				flag = skill;
-		}
+		flag = skill;
 	}
 	
 	public SkillType getFlag(){
