@@ -3,6 +3,8 @@ package com.tictactower.ui;
 import com.badlogic.gdx.Gdx;
 import com.tictactower.Game;
 import com.tictactower.gameboard.Gameboard;
+import com.tictactower.player.Player;
+import com.tictactower.skills.SkillType;
 
 public class ButtonNewTower extends Button {
 	
@@ -18,7 +20,11 @@ public class ButtonNewTower extends Button {
 
 	@Override
 	public void execute() {
-		Game.getInstance().getActivePlayer().subBuildCount();
-		Gdx.app.log("Skill", "NEW TOWAAAR!");
+		Player activePlayer = Game.getInstance().getActivePlayer();
+		if(activePlayer.getBuildCount()>0 && activePlayer.GetBuildUsage()<activePlayer.getSkillCap()){
+			Game.getInstance().getSkill().useSkill(SkillType.BUILD);
+			Gdx.app.log("Skill", "NEW TOWAAAR!");
+		}else{Gdx.app.log("Skill", "Cannot build!"); //For debug.
+		}
 	}
 }

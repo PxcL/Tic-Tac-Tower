@@ -3,6 +3,8 @@ package com.tictactower.ui;
 import com.badlogic.gdx.Gdx;
 import com.tictactower.Game;
 import com.tictactower.gameboard.Gameboard;
+import com.tictactower.player.Player;
+import com.tictactower.skills.SkillType;
 
 public class ButtonSilence extends Button {
 	
@@ -18,7 +20,11 @@ public class ButtonSilence extends Button {
 
 	@Override
 	public void execute() {
-		Game.getInstance().getActivePlayer().subSilenceCount();
-		Gdx.app.log("Skill", "SIIIIIILEEEEEEEEENCE");
+		Player activePlayer = Game.getInstance().getActivePlayer();
+		if(activePlayer.getSilenceCount()>0 && activePlayer.GetSilenceUsage()==0){
+			Game.getInstance().getSkill().useSkill(SkillType.SILENCE);
+			Gdx.app.log("Skill", "SIIIIIILEEEEEEEEENCE");
+		}else{Gdx.app.log("Skill", "Cannot silence!"); //For debug.
+		}
 	}
 }

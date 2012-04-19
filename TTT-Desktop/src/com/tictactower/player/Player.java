@@ -2,6 +2,7 @@ package com.tictactower.player;
 
 import java.util.ArrayList;
 
+import com.tictactower.gameboard.Mark;
 import com.tictactower.skills.Skill;
 import com.tictactower.ui.Buttons;
 
@@ -152,5 +153,7 @@ public abstract class Player {
 		buildUsage = 0;
 		shootUsage = 0;
 	}
+	
+	public abstract Mark getActiveMark();
 	
 }

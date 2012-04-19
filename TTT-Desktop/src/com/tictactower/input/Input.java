@@ -7,7 +7,7 @@ import com.tictactower.gameboard.Gameboard;
 import com.tictactower.gameboard.Mark;
 import com.tictactower.gameboard.Square;
 import com.tictactower.gamelogic.Towers;
-import com.tictactower.player.Player;
+import com.tictactower.player.*;
 import com.tictactower.ui.Button;
 import com.tictactower.ui.Buttons;
 
@@ -93,25 +93,61 @@ public class Input implements InputProcessor {
 		// Saa deler man paa bredden/hoyden til ruten for aa faa hvilken rad/kolonne trykket kom i.
 		x /= Square.EDGE_LENGTH;
 		y /= Square.EDGE_LENGTH;
-		if (Game.getInstance().getGameboard().getMark(x, y) == Mark.EMPTY) {
-			Player activePlayer = Game.getInstance().getActivePlayer();
-			if(!activePlayer.isSilenced()){
-				activePlayer.setMark(x, y);
-				activePlayer.setNotUsedMark(false);
-				Buttons.getButtonEndTurn().setActive(true);
-			}else{ //if the player has been silenced
-				activePlayer.setMark(x, y);
-				if(Towers.findTowers(x, y, activePlayer)){ 
-					//this means that a tower has been found, and the move is illegal
-					Game.getInstance().getGameboard().clearMark(x, y);
-					//print something saying the move is illegal...
-				}else{
-					//the move is accepted
-					activePlayer.setNotUsedMark(false);
-					Buttons.getButtonEndTurn().setActive(true);					
+		Player activePlayer = Game.getInstance().getActivePlayer();
+		switch(Game.getInstance().getSkill().getFlag()){
+		
+			case NO_SKILL:
+				if (Game.getInstance().getGameboard().getMark(x, y) == Mark.EMPTY) {
+					if(!activePlayer.isSilenced()){
+						activePlayer.setMark(x, y);
+						activePlayer.setNotUsedMark(false);
+						Buttons.getButtonEndTurn().setActive(true);
+					}else{ //if the player has been silenced
+						activePlayer.setMark(x, y);
+						if(Towers.findTowers(x, y, activePlayer)){ 
+							//this means that a tower has been found, and the move is illegal
+							Game.getInstance().getGameboard().clearMark(x, y);
+							//print something saying the move is illegal...
+						}else{
+							//the move is accepted
+							activePlayer.setNotUsedMark(false);
+							Buttons.getButtonEndTurn().setActive(true);					
+						}
+					}
 				}
-			}
+				break;
+			
+			case SHOOT:
+				if(activePlayer instanceof Player1){
+					if(Game.getInstance().getGameboard().getMark(x, y) == Mark.P2_ACTIVE){
+						Game.getInstance().getGameboard().setMark(x, y, Mark.DESTROYED);
+						activePlayer.subShootCount();
+					}
+				}else{
+					if(Game.getInstance().getGameboard().getMark(x, y) == Mark.P1_ACTIVE){
+						Game.getInstance().getGameboard().setMark(x, y, Mark.DESTROYED);
+						activePlayer.subShootCount();
+					}
+				}
+				break;
+				
+			case BUILD:
+				if(Game.getInstance().getGameboard().getMark(x, y) == Mark.EMPTY){
+					activePlayer.setMark(x, y);
+					activePlayer.subBuildCount();
+				}
+				break;
+				
+			case SILENCE:
+				if(activePlayer instanceof Player1){
+					Game.getInstance().getPlayer2().setSilenced(true);
+				}else{
+					Game.getInstance().getPlayer1().setSilenced(true);
+				}
+				activePlayer.subSilenceCount();
+				break;
 		}
+		Game.getInstance().getSkill().cancelSkill();
 	}
 	
 	private void checkForButtonClicks(int x, int y) {

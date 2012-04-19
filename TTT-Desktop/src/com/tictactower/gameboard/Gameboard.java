@@ -31,6 +31,7 @@ public class Gameboard {
 			gameboard[x][y].setMark(Mark.P2_ACTIVE);
 		}	
 	}
+	
 	public void setMarkToBuilt(int x, int y, Player player) {
 		if (player instanceof Player1) {
 			gameboard[x][y].setMark(Mark.P1_BUILT);
