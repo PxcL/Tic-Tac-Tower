@@ -2,7 +2,6 @@ package com.tictactower.player;
 
 import java.util.ArrayList;
 
-import com.tictactower.Game;
 import com.tictactower.skills.Skill;
 import com.tictactower.ui.Buttons;
 
@@ -35,9 +34,7 @@ public abstract class Player {
 		notUsedMark = false;
 	}
 
-	public void setMark(int x, int y, Player player) {
-		Game.getInstance().getGameboard().setMarkToActive(x, y, player);
-	}
+	public abstract void setMark(int x, int y);
 	
 	public boolean getNotUsedMark() {
 		return notUsedMark;

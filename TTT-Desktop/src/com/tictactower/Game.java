@@ -108,8 +108,6 @@ public class Game implements ApplicationListener {
 	
 	public void changeActivePlayer() {
 		activePlayer.setNotUsedMark(false);
-		activePlayer.addSilenceCount();
-		activePlayer.addShootCount();
 		activePlayer.ResetSkillUsage();
 		if (activePlayer instanceof Player1)
 			activePlayer = player2;

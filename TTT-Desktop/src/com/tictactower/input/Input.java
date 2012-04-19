@@ -96,11 +96,11 @@ public class Input implements InputProcessor {
 		if (Game.getInstance().getGameboard().getMark(x, y) == Mark.EMPTY) {
 			Player activePlayer = Game.getInstance().getActivePlayer();
 			if(!activePlayer.isSilenced()){
-				activePlayer.setMark(x, y, activePlayer);
+				activePlayer.setMark(x, y);
 				activePlayer.setNotUsedMark(false);
 				Buttons.getButtonEndTurn().setActive(true);
 			}else{ //if the player has been silenced
-				activePlayer.setMark(x, y, activePlayer);
+				activePlayer.setMark(x, y);
 				if(Towers.findTowers(x, y, activePlayer)){ 
 					//this means that a tower has been found, and the move is illegal
 					Game.getInstance().getGameboard().clearMark(x, y);
