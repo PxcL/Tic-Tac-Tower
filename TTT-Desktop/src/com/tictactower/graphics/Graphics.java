@@ -25,7 +25,7 @@ public class Graphics {
 					markTexture = Textures.MARK_P1_ACTIVE;
 				else if (gameboard[i][j].getMark() == Mark.P2_ACTIVE)
 					markTexture = Textures.MARK_P2_ACTIVE;
-					
+				//legge til else if for BUILT og slikt også
 				spriteBatch.draw(markTexture, 
 								gameboard[i][j].getPosition().x, 
 								gameboard[i][j].getPosition().y, 
