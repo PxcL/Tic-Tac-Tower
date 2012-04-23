@@ -2,6 +2,7 @@ package com.tictactower.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Text;
 import com.tictactower.Game;
 import com.tictactower.gameboard.Mark;
 import com.tictactower.gameboard.Square;
@@ -11,6 +12,7 @@ public class Graphics {
 	public void draw(SpriteBatch spriteBatch) {
 		drawGameboard(spriteBatch);
 		drawButtons(spriteBatch);
+		drawText(spriteBatch);
 	}
 
 	private void drawGameboard(SpriteBatch spriteBatch) {
@@ -46,6 +48,10 @@ public class Graphics {
 							button.getWidth(),
 							button.getHeight());
 		}
+	}
+	
+	private void drawText(SpriteBatch spriteBatch) {
+		TextBox.font.draw(spriteBatch, TextBox.getPlayer1String(), TextBox.position.x, TextBox.position.y);
 	}
 	
 	private Texture findTexture(Button button) {

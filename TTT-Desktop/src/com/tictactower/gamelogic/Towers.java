@@ -10,14 +10,6 @@ import com.tictactower.player.Player;
 import com.tictactower.skills.SkillType;
 
 
-/*
- * Har laget alle tower-funksjonene, men de kalles ikke noe sted.
- * De farger heller ikke brikkene som finnes til BUILT
- * Jeg har tenkt på mange måter å gjøre dette på, f.eks.:
- * Lage Towers-klassen til en klasse som holder posisjonen og tårn-type (akkurat som Tower i unity)
- * Blir dette for rotete?
- */
-
 public class Towers {
 
 	public static boolean findTowers(int x, int y, Player activePlayer) {
