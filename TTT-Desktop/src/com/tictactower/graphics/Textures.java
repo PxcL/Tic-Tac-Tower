@@ -9,8 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Textures {
 	public final static Texture MARK_EMPTY = new Texture("singleGrid.bmp");
-	public final static Texture MARK_P1_ACTIVE = new Texture("P1_ACTIVE.png");
-	public final static Texture MARK_P2_ACTIVE = new Texture("P2_ACTIVE.png");
+	public final static Texture MARK_P1_ACTIVE = new Texture("p1_active.png");
+	public final static Texture MARK_P2_ACTIVE = new Texture("p2_active.png");
+	public final static Texture MARK_P1_BUILT = new Texture("p1_built.png");
+	public final static Texture MARK_P2_BUILT = new Texture("p2_built.png");
 	
 	public final static Texture BUTTON_END_TURN = new Texture("txtBox_75black.png");
 	public final static Texture BUTTON_SILENCE_ACTIVE = new Texture("emp_active.png");
