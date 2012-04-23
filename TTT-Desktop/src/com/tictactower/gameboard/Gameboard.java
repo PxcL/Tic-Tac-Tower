@@ -8,7 +8,7 @@ public class Gameboard {
 	
 	public final static int GAMEBOARD_EDGE_LENGTH = Square.EDGE_LENGTH * 9;
 	public final static int X_OFFSET = (Gdx.graphics.getWidth() - GAMEBOARD_EDGE_LENGTH) / 2;
-	public final static int Y_OFFSET = (Gdx.graphics.getHeight() - (X_OFFSET + GAMEBOARD_EDGE_LENGTH));
+	public final static int Y_OFFSET = (Gdx.graphics.getHeight() - (X_OFFSET + GAMEBOARD_EDGE_LENGTH + 50));
 	public final static int NUMBER_OF_COLUMNS = 9;
 	public final static int NUMBER_OF_ROWS = 9;
 	
