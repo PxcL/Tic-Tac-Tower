@@ -1,4 +1,4 @@
-package com.tictactower.ui;
+package com.tictactower.ui.buttons;
 
 import com.badlogic.gdx.Gdx;
 import com.tictactower.Game;

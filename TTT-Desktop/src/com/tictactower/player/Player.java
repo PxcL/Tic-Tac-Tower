@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.tictactower.gameboard.Mark;
 import com.tictactower.skills.Skill;
-import com.tictactower.ui.Buttons;
+import com.tictactower.ui.buttons.Buttons;
 
 public abstract class Player {
 	

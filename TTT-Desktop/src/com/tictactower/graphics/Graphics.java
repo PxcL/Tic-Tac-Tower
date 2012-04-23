@@ -1,12 +1,22 @@
 package com.tictactower.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Text;
 import com.tictactower.Game;
 import com.tictactower.gameboard.Mark;
 import com.tictactower.gameboard.Square;
-import com.tictactower.ui.*;
+import com.tictactower.player.Player1;
+import com.tictactower.player.Player2;
+import com.tictactower.ui.buttons.Button;
+import com.tictactower.ui.buttons.ButtonDestroyTower;
+import com.tictactower.ui.buttons.ButtonEndTurn;
+import com.tictactower.ui.buttons.ButtonMultipleTowers;
+import com.tictactower.ui.buttons.ButtonNewTower;
+import com.tictactower.ui.buttons.ButtonSilence;
+import com.tictactower.ui.buttons.Buttons;
+import com.tictactower.ui.text.TextBox;
+import com.tictactower.ui.text.TextBoxes;
 public class Graphics {
 	
 	public void draw(SpriteBatch spriteBatch) {
@@ -51,7 +61,26 @@ public class Graphics {
 	}
 	
 	private void drawText(SpriteBatch spriteBatch) {
-		TextBox.font.draw(spriteBatch, TextBox.getPlayer1String(), TextBox.position.x, TextBox.position.y);
+		float[] color;
+		for (TextBox textBox : TextBoxes.getTextBoxListP1()) {
+			if (Game.getInstance().getActivePlayer() instanceof Player1) 
+				color = textBox.getColorActive();
+			else 
+				color = textBox.getColorDeactive();
+			textBox.font.setColor(color[0], color[1], 
+			color[2], color[3]);
+			textBox.font.draw(spriteBatch, textBox.getText(), textBox.getPosition().x, textBox.getPosition().y);
+		}
+		
+		for (TextBox textBox : TextBoxes.getTextBoxListP2()) {
+			if (Game.getInstance().getActivePlayer() instanceof Player2) 
+				color = textBox.getColorActive();
+			else 
+				color = textBox.getColorDeactive();
+			textBox.font.setColor(color[0], color[1], 
+					color[2], color[3]);
+			textBox.font.draw(spriteBatch, textBox.getText(), textBox.getPosition().x, textBox.getPosition().y);
+		}
 	}
 	
 	private Texture findTexture(Button button) {

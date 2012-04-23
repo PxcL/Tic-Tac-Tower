@@ -12,7 +12,8 @@ import com.tictactower.player.Player1;
 import com.tictactower.player.Player2;
 import com.tictactower.skills.Skill;
 import com.tictactower.skills.SkillType;
-import com.tictactower.ui.Buttons;
+import com.tictactower.ui.buttons.Buttons;
+import com.tictactower.ui.text.TextBoxes;
 
 public class Game implements ApplicationListener {
 	
@@ -31,6 +32,7 @@ public class Game implements ApplicationListener {
 	private Player2 player2;
 	private Graphics graphics;
 	private Buttons buttons;
+	private TextBoxes textBoxes;
 	private Skill skill;
 	
 	private Player activePlayer;
@@ -39,9 +41,9 @@ public class Game implements ApplicationListener {
 
 	@Override
 	public void create() {
-		Gdx.gl.glClearColor(0, 1, 0, 1);
+		Gdx.gl.glClearColor(0.6f, 0.6f, 0.6f, 1);
 		
-		// Input trenger ingen peker siden kommunikasjonen bare går ut fra Input.
+		// Input trenger ingen peker siden kommunikasjonen bare er event-driven ut fra Input.
 		new Input();
 		
 		gameboard = new Gameboard();
@@ -49,6 +51,7 @@ public class Game implements ApplicationListener {
 		player2 = new Player2();
 		graphics = new Graphics();
 		buttons = new Buttons();
+		textBoxes = new TextBoxes();
 		skill = new Skill();
 		
 		activePlayer = player1;
@@ -97,6 +100,10 @@ public class Game implements ApplicationListener {
 	
 	public Buttons getButtons() {
 		return buttons;
+	}
+	
+	public TextBoxes getTextBoxes() {
+		return textBoxes;
 	}
 	
 	public Skill getSkill(){

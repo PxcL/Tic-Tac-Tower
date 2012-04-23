@@ -8,8 +8,8 @@ import com.tictactower.gameboard.Mark;
 import com.tictactower.gameboard.Square;
 import com.tictactower.gamelogic.Towers;
 import com.tictactower.player.*;
-import com.tictactower.ui.Button;
-import com.tictactower.ui.Buttons;
+import com.tictactower.ui.buttons.Button;
+import com.tictactower.ui.buttons.Buttons;
 
 public class Input implements InputProcessor {
 	

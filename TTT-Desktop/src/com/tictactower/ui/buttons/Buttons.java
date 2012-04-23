@@ -1,4 +1,4 @@
-package com.tictactower.ui;
+package com.tictactower.ui.buttons;
 
 import java.util.ArrayList;
 
