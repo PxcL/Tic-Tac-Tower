@@ -12,4 +12,8 @@ public class Player2 extends Player {
 	public Mark getActiveMark(){
 		return Mark.P2_ACTIVE;
 	}
+	
+	public int getPlayerId(){
+		return 2;
+	}
 }

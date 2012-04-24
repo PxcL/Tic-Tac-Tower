@@ -50,15 +50,19 @@ public class Towers {
 				if( s == SkillType.SHOOT){
 					activePlayer.addShootCount();
 					debugString += "shoot, ";
+					Gdx.app.log("Player " +activePlayer.getPlayerId(), "Now has: "+activePlayer.getSkillCap() + " shoots");
 				}else if(s == SkillType.BUILD){
 					activePlayer.addBuildCount();
 					debugString += "build, ";
+					Gdx.app.log("Player " +activePlayer.getPlayerId(), "Now has: "+activePlayer.getSkillCap() + " builds");
 				}else if(s == SkillType.SILENCE){
 					activePlayer.addSilenceCount();
 					debugString += "silence, ";
+					Gdx.app.log("Player " +activePlayer.getPlayerId(), "Now has: "+activePlayer.getSkillCap() + " silences");
 				}else if(s == SkillType.SKILLCAP){
 					activePlayer.addSkillCap();
 					debugString += "skillCap, ";
+					Gdx.app.log("Player " +activePlayer.getPlayerId(), "Now has: "+activePlayer.getSkillCap() + " in Skill Cap");
 				}
 			}
 			Gdx.app.log("Tower", "Found skills: "+debugString);
